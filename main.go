@@ -11,21 +11,21 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-const USAGE = `noscli
+const USAGE = `noscl
 
 Usage:
-  noscli publish <content>
-  noscli metadata --name=<name> --description=<description> --image=<image>
-  noscli home [--page=<page>]
-  noscli key <key> [--page=<page>]
-  noscli key <key> follow
-  noscli key <key> unfollow
-  noscli event <id> [--page=<page>]
-  noscli event <id> reference <content>
-  noscli relay
-  noscli relay add <url>
-  noscli relay remove <url>
-  noscli relay recommend <url>
+  noscl home [--page=<page>]
+  noscl publish <content>
+  noscl metadata --name=<name> --description=<description> --image=<image>
+  noscl key <key> [--page=<page>]
+  noscl key <key> follow
+  noscl key <key> unfollow
+  noscl event <id> [--page=<page>]
+  noscl event <id> reference <content>
+  noscl relay
+  noscl relay add <url>
+  noscl relay remove <url>
+  noscl relay recommend <url>
 `
 
 var config struct {
@@ -50,6 +50,7 @@ func main() {
 	flag.StringVar(&config.DataDir, "datadir", "~/.config/nostr", "Base directory for configurations and data from Nostr.")
 	flag.Parse()
 	config.DataDir, _ = homedir.Expand(config.DataDir)
+	os.Mkdir(config.DataDir, 0700)
 
 	// parse config
 	path := filepath.Join(config.DataDir, "config.yaml")
@@ -63,6 +64,7 @@ func main() {
 		yaml.NewEncoder(f).Encode(config)
 		f, _ = os.Open(path)
 	}
+	f, _ = os.Open(path)
 	err = yaml.NewDecoder(f).Decode(&config)
 	if err != nil {
 		log.Fatal("can't parse config file " + path + ": " + err.Error())
@@ -77,6 +79,7 @@ func main() {
 
 	switch {
 	case opts["home"].(bool):
+		home(opts)
 	case opts["publish"].(bool):
 	case opts["metadata"].(bool):
 	case opts["key"].(bool):
