@@ -91,8 +91,17 @@ func main() {
 	case opts["event"].(bool):
 	case opts["event"].(bool) && opts["reference"].(bool):
 	case opts["relay"].(bool):
-	case opts["relay"].(bool) && opts["add"].(bool):
-	case opts["relay"].(bool) && opts["remove"].(bool):
-	case opts["relay"].(bool) && opts["recommend"].(bool):
+		switch {
+		case opts["add"].(bool):
+			addRelay(opts)
+			saveConfig(path)
+		case opts["remove"].(bool):
+			removeRelay(opts)
+			saveConfig(path)
+		case opts["recommend"].(bool):
+			recommendRelay(opts)
+		default:
+			listRelays(opts)
+		}
 	}
 }
