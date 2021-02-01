@@ -56,12 +56,7 @@ func main() {
 	path := filepath.Join(config.DataDir, "config.yaml")
 	f, err := os.Open(path)
 	if err != nil {
-		f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0644)
-		if err != nil {
-			log.Fatal("can't open config file " + path + ": " + err.Error())
-			return
-		}
-		yaml.NewEncoder(f).Encode(config)
+		saveConfig(path)
 		f, _ = os.Open(path)
 	}
 	f, _ = os.Open(path)
@@ -83,8 +78,16 @@ func main() {
 	case opts["publish"].(bool):
 	case opts["metadata"].(bool):
 	case opts["key"].(bool):
-	case opts["key"].(bool) && opts["follow"].(bool):
-	case opts["key"].(bool) && opts["unfollow"].(bool):
+		switch {
+		case opts["follow"].(bool):
+			follow(opts)
+			saveConfig(path)
+		case opts["unfollow"].(bool):
+			unfollow(opts)
+			saveConfig(path)
+		default:
+			showKey(opts)
+		}
 	case opts["event"].(bool):
 	case opts["event"].(bool) && opts["reference"].(bool):
 	case opts["relay"].(bool):
