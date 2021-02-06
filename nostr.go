@@ -19,4 +19,8 @@ func initNostr() {
 	for notice := range pool.Notices {
 		fmt.Fprintf(os.Stderr, "%s sent a notice: '%s'\n", notice.Relay, notice.Message)
 	}
+
+	if config.PrivateKey != "" {
+		pool.SecretKey = &config.PrivateKey
+	}
 }

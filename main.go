@@ -15,13 +15,14 @@ const USAGE = `noscl
 
 Usage:
   noscl home [--page=<page>]
-  noscl publish <content>
+  noscl setprivate <key>
+  noscl public
+  noscl publish [--reference=<id>] <content>
   noscl metadata --name=<name> --description=<description> --image=<image>
-  noscl key <key> [--page=<page>]
-  noscl key <key> follow
-  noscl key <key> unfollow
+  noscl profile <key> [--page=<page>]
+  noscl follow <key>
+  noscl unfollow <key>
   noscl event <id> [--page=<page>]
-  noscl event <id> reference <content>
   noscl relay
   noscl relay add <url>
   noscl relay remove <url>
@@ -29,9 +30,10 @@ Usage:
 `
 
 var config struct {
-	DataDir   string   `yaml:"-"`
-	Relays    []Relay  `yaml:"relays,flow"`
-	Following []Follow `yaml:"following,flow"`
+	DataDir    string   `yaml:"-"`
+	Relays     []Relay  `yaml:"relays,flow"`
+	Following  []Follow `yaml:"following,flow"`
+	PrivateKey string   `yaml:"privatekey,omitempty"`
 }
 
 type Relay struct {
@@ -47,7 +49,8 @@ type Follow struct {
 
 func main() {
 	// find datadir
-	flag.StringVar(&config.DataDir, "datadir", "~/.config/nostr", "Base directory for configurations and data from Nostr.")
+	flag.StringVar(&config.DataDir, "datadir", "~/.config/nostr",
+		"Base directory for configurations and data from Nostr.")
 	flag.Parse()
 	config.DataDir, _ = homedir.Expand(config.DataDir)
 	os.Mkdir(config.DataDir, 0700)
@@ -75,21 +78,26 @@ func main() {
 	switch {
 	case opts["home"].(bool):
 		home(opts)
+	case opts["setprivate"].(bool):
+		// TODO make this read STDIN and encrypt the key locally
+		// TODO also accept BIP39
+		setPrivateKey(opts)
+		saveConfig(path)
+	case opts["public"].(bool):
+		showPublicKey(opts)
 	case opts["publish"].(bool):
+		publish(opts)
 	case opts["metadata"].(bool):
-	case opts["key"].(bool):
-		switch {
-		case opts["follow"].(bool):
-			follow(opts)
-			saveConfig(path)
-		case opts["unfollow"].(bool):
-			unfollow(opts)
-			saveConfig(path)
-		default:
-			showKey(opts)
-		}
+	case opts["profile"].(bool):
+		showProfile(opts)
+	case opts["follow"].(bool):
+		follow(opts)
+		saveConfig(path)
+	case opts["unfollow"].(bool):
+		unfollow(opts)
+		saveConfig(path)
 	case opts["event"].(bool):
-	case opts["event"].(bool) && opts["reference"].(bool):
+		view(opts)
 	case opts["relay"].(bool):
 		switch {
 		case opts["add"].(bool):
