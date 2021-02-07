@@ -7,6 +7,8 @@ import (
 )
 
 func showProfile(opts docopt.Opts) {
+	initNostr()
+
 	key := opts["<key>"].(string)
 	pool.ReqKey(key, nil)
 	printIncomingNotes()

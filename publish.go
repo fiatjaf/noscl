@@ -15,6 +15,8 @@ func publish(opts docopt.Opts) {
 		return
 	}
 
+	initNostr()
+
 	tags := make(event.Tags, 0, 1)
 	if refid, err := opts.String("--reference"); err == nil {
 		tags = append(tags, event.Tag([]interface{}{"e", refid}))
@@ -29,6 +31,7 @@ func publish(opts docopt.Opts) {
 	})
 	if err != nil {
 		log.Printf("Error publishing: %s.\n", err.Error())
+		return
 	}
 
 	pool.ReqEvent(evt.ID, nil)
@@ -36,6 +39,6 @@ func publish(opts docopt.Opts) {
 		if em.Event.ID != evt.ID {
 			continue
 		}
-		fmt.Sprint("Seen it on '%s'.", em.Relay)
+		fmt.Printf("Seen it on '%s'.\n", em.Relay)
 	}
 }

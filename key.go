@@ -33,7 +33,7 @@ func showPublicKey(opts docopt.Opts) {
 
 	pubkey := getPubKey(config.PrivateKey)
 	if pubkey != "" {
-		fmt.Printf("%x\n", pubkey)
+		fmt.Printf("%s\n", pubkey)
 	}
 }
 
@@ -43,6 +43,6 @@ func getPubKey(privateKey string) string {
 		return ""
 	} else {
 		_, pubkey := btcec.PrivKeyFromBytes(btcec.S256(), keyb)
-		return hex.EncodeToString(pubkey.SerializeCompressed()[1:])
+		return hex.EncodeToString(pubkey.X.Bytes())
 	}
 }

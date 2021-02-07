@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"os"
+	"log"
 
 	"github.com/fiatjaf/go-nostr/relaypool"
 )
@@ -13,12 +12,21 @@ func initNostr() {
 	pool = relaypool.New()
 
 	for _, relay := range config.Relays {
-		pool.Add(relay.URL, nil)
+		err := pool.Add(relay.URL, nil)
+		if err != nil {
+			log.Printf("error adding relay '%s': %s", relay.URL, err.Error())
+		}
 	}
 
-	for notice := range pool.Notices {
-		fmt.Fprintf(os.Stderr, "%s sent a notice: '%s'\n", notice.Relay, notice.Message)
+	if len(pool.Relays) == 0 {
+		log.Printf("You have zero relays configured, everything will probably fail.")
 	}
+
+	go func() {
+		for notice := range pool.Notices {
+			log.Printf("%s has sent a notice: '%s'\n", notice.Relay, notice.Message)
+		}
+	}()
 
 	if config.PrivateKey != "" {
 		pool.SecretKey = &config.PrivateKey

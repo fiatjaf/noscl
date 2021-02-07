@@ -37,14 +37,14 @@ var config struct {
 }
 
 type Relay struct {
-	URL    string `yaml:"url"`
-	Policy string `yaml:"policy"` // "r" for read, "w" for write, "n" for no-related
+	URL    string `yaml:"url,flow"`
+	Policy string `yaml:"policy,flow"` // "r" for read, "w" for write, "n" for no-related
 }
 
 type Follow struct {
 	Key    string   `yaml:"key"`
-	Name   string   `yaml:"name,omitempty"`
-	Relays []string `yaml:"relays,omitempty"`
+	Name   string   `yaml:"name,flow,omitempty"`
+	Relays []string `yaml:"relays,flow,omitempty"`
 }
 
 func main() {
