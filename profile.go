@@ -4,14 +4,18 @@ import (
 	"fmt"
 
 	"github.com/docopt/docopt-go"
+	"github.com/fiatjaf/go-nostr/filter"
 )
 
 func showProfile(opts docopt.Opts) {
 	initNostr()
 
 	key := opts["<key>"].(string)
-	pool.ReqKey(key, nil)
-	printIncomingNotes()
+
+	sub := pool.Sub(filter.EventFilter{Author: key})
+	for event := range sub.UniqueEvents {
+		printEvent(event)
+	}
 }
 
 func follow(opts docopt.Opts) {

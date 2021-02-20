@@ -2,15 +2,20 @@ package main
 
 import (
 	"github.com/docopt/docopt-go"
+	"github.com/fiatjaf/go-nostr/filter"
 )
 
 func home(opts docopt.Opts) {
 	initNostr()
 
+	var keys []string
 	for _, follow := range config.Following {
-		pool.SubKey(follow.Key)
+		keys = append(keys, follow.Key)
 	}
 
-	pool.ReqFeed(nil)
-	printIncomingNotes()
+	sub := pool.Sub(filter.EventFilter{Authors: keys})
+
+	for event := range sub.UniqueEvents {
+		printEvent(event)
+	}
 }

@@ -11,10 +11,12 @@ var pool *relaypool.RelayPool
 func initNostr() {
 	pool = relaypool.New()
 
-	for _, relay := range config.Relays {
-		err := pool.Add(relay.URL, nil)
+	for relay, policy := range config.Relays {
+		err := pool.Add(relay, &relaypool.Policy{
+			SimplePolicy: relaypool.SimplePolicy{Read: policy.Read, Write: policy.Write},
+		})
 		if err != nil {
-			log.Printf("error adding relay '%s': %s", relay.URL, err.Error())
+			log.Printf("error adding relay '%s': %s", relay, err.Error())
 		}
 	}
 

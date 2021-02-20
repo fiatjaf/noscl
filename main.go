@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"log"
 	"os"
@@ -8,7 +9,6 @@ import (
 
 	"github.com/docopt/docopt-go"
 	"github.com/mitchellh/go-homedir"
-	"gopkg.in/yaml.v2"
 )
 
 const USAGE = `noscl
@@ -29,24 +29,6 @@ Usage:
   noscl relay recommend <url>
 `
 
-var config struct {
-	DataDir    string   `yaml:"-"`
-	Relays     []Relay  `yaml:"relays,flow"`
-	Following  []Follow `yaml:"following,flow"`
-	PrivateKey string   `yaml:"privatekey,omitempty"`
-}
-
-type Relay struct {
-	URL    string `yaml:"url,flow"`
-	Policy string `yaml:"policy,flow"` // "r" for read, "w" for write, "n" for no-related
-}
-
-type Follow struct {
-	Key    string   `yaml:"key"`
-	Name   string   `yaml:"name,flow,omitempty"`
-	Relays []string `yaml:"relays,flow,omitempty"`
-}
-
 func main() {
 	// find datadir
 	flag.StringVar(&config.DataDir, "datadir", "~/.config/nostr",
@@ -55,19 +37,23 @@ func main() {
 	config.DataDir, _ = homedir.Expand(config.DataDir)
 	os.Mkdir(config.DataDir, 0700)
 
+	// logger config
+	log.SetPrefix("<> ")
+
 	// parse config
-	path := filepath.Join(config.DataDir, "config.yaml")
+	path := filepath.Join(config.DataDir, "config.json")
 	f, err := os.Open(path)
 	if err != nil {
 		saveConfig(path)
 		f, _ = os.Open(path)
 	}
 	f, _ = os.Open(path)
-	err = yaml.NewDecoder(f).Decode(&config)
+	err = json.NewDecoder(f).Decode(&config)
 	if err != nil {
 		log.Fatal("can't parse config file " + path + ": " + err.Error())
 		return
 	}
+	config.Init()
 
 	// parse args
 	opts, err := docopt.ParseDoc(USAGE)

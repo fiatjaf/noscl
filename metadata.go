@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"time"
 
@@ -23,7 +22,7 @@ func setMetadata(opts docopt.Opts) {
 		Image       string `json:"image,omitempty"`
 	}{name, description, image})
 
-	evt, err := pool.PublishEvent(&event.Event{
+	_, statuses, err := pool.PublishEvent(&event.Event{
 		PubKey:    getPubKey(config.PrivateKey),
 		CreatedAt: uint32(time.Now().Unix()),
 		Kind:      event.KindSetMetadata,
@@ -35,11 +34,5 @@ func setMetadata(opts docopt.Opts) {
 		return
 	}
 
-	pool.ReqEvent(evt.ID, nil)
-	for em := range pool.Events {
-		if em.Event.ID != evt.ID {
-			continue
-		}
-		fmt.Printf("Seen it on '%s'.\n", em.Relay)
-	}
+	printPublishStatus(statuses)
 }

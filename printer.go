@@ -8,6 +8,7 @@ import (
 
 	"github.com/dustin/go-humanize"
 	"github.com/fiatjaf/go-nostr/event"
+	"github.com/fiatjaf/go-nostr/relaypool"
 	"gopkg.in/yaml.v2"
 )
 
@@ -62,17 +63,15 @@ func shorten(id string) string {
 	return id[0:4] + "..." + id[len(id)-4:]
 }
 
-func printIncomingNotes() {
-	seen := make(map[string]bool)
-	for em := range pool.Events {
-		if em.Event.Kind != event.KindTextNote {
-			continue
+func printPublishStatus(statuses chan relaypool.PublishStatus) {
+	for status := range statuses {
+		switch status.Status {
+		case relaypool.PublishStatusSent:
+			fmt.Printf("Sent to '%s'.\n", status.Relay)
+		case relaypool.PublishStatusFailed:
+			fmt.Printf("Failed to send to '%s'.\n", status.Relay)
+		case relaypool.PublishStatusSucceeded:
+			fmt.Printf("Seen it on '%s'.\n", status.Relay)
 		}
-		if _, ok := seen[em.Event.ID]; ok {
-			continue
-		}
-		seen[em.Event.ID] = true
-
-		printEvent(em.Event)
 	}
 }

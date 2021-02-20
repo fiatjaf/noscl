@@ -1,10 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"os"
-
-	"gopkg.in/yaml.v2"
 )
 
 func saveConfig(path string) {
@@ -13,5 +12,9 @@ func saveConfig(path string) {
 		log.Fatal("can't open config file " + path + ": " + err.Error())
 		return
 	}
-	yaml.NewEncoder(f).Encode(config)
+
+	enc := json.NewEncoder(f)
+	enc.SetIndent("", "  ")
+
+	enc.Encode(config)
 }

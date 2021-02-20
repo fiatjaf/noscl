@@ -4,19 +4,21 @@ import (
 	"log"
 
 	"github.com/docopt/docopt-go"
+	"github.com/fiatjaf/go-nostr/filter"
 )
 
 func view(opts docopt.Opts) {
-	key := opts["<id>"].(string)
-	pool.ReqEvent(key, nil)
+	id := opts["<id>"].(string)
 
-	for em := range pool.Events {
-		if em.Event.ID != key {
-			log.Printf("got unexpected event %s.\n", em.Event.ID)
+	sub := pool.Sub(filter.EventFilter{ID: id})
+
+	for event := range sub.UniqueEvents {
+		if event.ID != id {
+			log.Printf("got unexpected event %s.\n", event.ID)
 			continue
 		}
 
-		printEvent(em.Event)
+		printEvent(event)
 		break
 	}
 }
