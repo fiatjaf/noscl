@@ -18,7 +18,7 @@ Usage:
   noscl setprivate <key>
   noscl public
   noscl publish [--reference=<id>] <content>
-  noscl metadata --name=<name> --description=<description> --image=<image>
+  noscl metadata --name=<name> [--description=<description>] [--image=<image>]
   noscl profile <key> [--page=<page>]
   noscl follow <key>
   noscl unfollow <key>
@@ -88,6 +88,7 @@ func main() {
 	case opts["publish"].(bool):
 		publish(opts)
 	case opts["metadata"].(bool):
+		setMetadata(opts)
 	case opts["profile"].(bool):
 		showProfile(opts)
 	case opts["follow"].(bool):
