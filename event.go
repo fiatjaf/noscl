@@ -8,6 +8,8 @@ import (
 )
 
 func view(opts docopt.Opts) {
+	initNostr()
+
 	id := opts["<id>"].(string)
 
 	sub := pool.Sub(filter.EventFilter{ID: id})

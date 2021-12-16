@@ -13,17 +13,19 @@ Compile with `go get github.com/fiatjaf/noscl` or [download a binary](releases/)
 noscl
 
 Usage:
-  noscl home [--page=<page>]
+  noscl home
   noscl setprivate <key>
   noscl public
   noscl publish [--reference=<id>] <content>
-  noscl profile <key> [--page=<page>]
+  noscl metadata --name=<name> [--description=<description>] [--image=<image>]
+  noscl profile <key>
   noscl follow <key>
   noscl unfollow <key>
-  noscl event <id> [--page=<page>]
+  noscl event <id>
   noscl relay
   noscl relay add <url>
   noscl relay remove <url>
+  noscl relay recommend <url>
 ```
 
 The basic flow is something like

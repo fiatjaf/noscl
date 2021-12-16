@@ -21,7 +21,7 @@ func publish(opts docopt.Opts) {
 		tags = append(tags, event.Tag([]interface{}{"e", refid}))
 	}
 
-	_, statuses, err := pool.PublishEvent(&event.Event{
+	event, statuses, err := pool.PublishEvent(&event.Event{
 		PubKey:    getPubKey(config.PrivateKey),
 		CreatedAt: uint32(time.Now().Unix()),
 		Kind:      event.KindTextNote,
@@ -33,5 +33,5 @@ func publish(opts docopt.Opts) {
 		return
 	}
 
-	printPublishStatus(statuses)
+	printPublishStatus(event, statuses)
 }

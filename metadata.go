@@ -22,7 +22,7 @@ func setMetadata(opts docopt.Opts) {
 		Image       string `json:"image,omitempty"`
 	}{name, description, image})
 
-	_, statuses, err := pool.PublishEvent(&event.Event{
+	event, statuses, err := pool.PublishEvent(&event.Event{
 		PubKey:    getPubKey(config.PrivateKey),
 		CreatedAt: uint32(time.Now().Unix()),
 		Kind:      event.KindSetMetadata,
@@ -34,5 +34,5 @@ func setMetadata(opts docopt.Opts) {
 		return
 	}
 
-	printPublishStatus(statuses)
+	printPublishStatus(event, statuses)
 }

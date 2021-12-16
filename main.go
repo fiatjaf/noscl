@@ -14,15 +14,15 @@ import (
 const USAGE = `noscl
 
 Usage:
-  noscl home [--page=<page>]
+  noscl home
   noscl setprivate <key>
   noscl public
   noscl publish [--reference=<id>] <content>
   noscl metadata --name=<name> [--description=<description>] [--image=<image>]
-  noscl profile <key> [--page=<page>]
+  noscl profile <key>
   noscl follow <key>
   noscl unfollow <key>
-  noscl event <id> [--page=<page>]
+  noscl event <id>
   noscl relay
   noscl relay add <url>
   noscl relay remove <url>
