@@ -12,7 +12,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var kindNames = map[uint8]string{
+var kindNames = map[int]string{
 	event.KindSetMetadata:            "Profile Metadata",
 	event.KindTextNote:               "Text Note",
 	event.KindRecommendServer:        "Relay Recommendation",
