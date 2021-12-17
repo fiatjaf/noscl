@@ -13,7 +13,7 @@ func home(opts docopt.Opts) {
 		keys = append(keys, follow.Key)
 	}
 
-	sub := pool.Sub(filter.EventFilter{Authors: keys})
+	sub := pool.Sub(filter.EventFilters{{Authors: keys}})
 
 	for event := range sub.UniqueEvents {
 		printEvent(event)

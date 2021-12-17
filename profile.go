@@ -12,7 +12,7 @@ func showProfile(opts docopt.Opts) {
 
 	key := opts["<key>"].(string)
 
-	sub := pool.Sub(filter.EventFilter{Authors: []string{key}})
+	sub := pool.Sub(filter.EventFilters{{Authors: []string{key}}})
 	for event := range sub.UniqueEvents {
 		printEvent(event)
 	}
