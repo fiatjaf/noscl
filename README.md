@@ -1,7 +1,7 @@
 noscl
 =====
 
-Command line client for [Nostr](https://github.com/fiatjaf/noscl).
+Command line client for [Nostr](https://github.com/fiatjaf/nostr).
 
 ## Installation
 
