@@ -3,17 +3,18 @@ package main
 import (
 	"log"
 
-	"github.com/fiatjaf/go-nostr/relaypool"
+	"github.com/fiatjaf/go-nostr"
 )
 
-var pool *relaypool.RelayPool
+var pool *nostr.RelayPool
 
 func initNostr() {
-	pool = relaypool.New()
+	pool = nostr.NewRelayPool()
 
 	for relay, policy := range config.Relays {
-		err := pool.Add(relay, &relaypool.Policy{
-			SimplePolicy: relaypool.SimplePolicy{Read: policy.Read, Write: policy.Write},
+		err := pool.Add(relay, nostr.SimplePolicy{
+			Read:  policy.Read,
+			Write: policy.Write,
 		})
 		if err != nil {
 			log.Printf("error adding relay '%s': %s", relay, err.Error())

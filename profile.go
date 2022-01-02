@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/docopt/docopt-go"
-	"github.com/fiatjaf/go-nostr/filter"
+	"github.com/fiatjaf/go-nostr"
 )
 
 func showProfile(opts docopt.Opts) {
@@ -12,7 +12,7 @@ func showProfile(opts docopt.Opts) {
 
 	key := opts["<key>"].(string)
 
-	sub := pool.Sub(filter.EventFilters{{Authors: []string{key}}})
+	sub := pool.Sub(nostr.EventFilters{{Authors: []string{key}}})
 	for event := range sub.UniqueEvents {
 		printEvent(event)
 	}

@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/docopt/docopt-go"
-	"github.com/fiatjaf/go-nostr/event"
+	"github.com/fiatjaf/go-nostr"
 )
 
 func publish(opts docopt.Opts) {
@@ -16,15 +16,14 @@ func publish(opts docopt.Opts) {
 
 	initNostr()
 
-	tags := make(event.Tags, 0, 1)
+	tags := make(nostr.Tags, 0, 1)
 	if refid, err := opts.String("--reference"); err == nil {
-		tags = append(tags, event.Tag([]interface{}{"e", refid}))
+		tags = append(tags, nostr.Tag([]interface{}{"e", refid}))
 	}
 
-	event, statuses, err := pool.PublishEvent(&event.Event{
-		PubKey:    getPubKey(config.PrivateKey),
+	event, statuses, err := pool.PublishEvent(&nostr.Event{
 		CreatedAt: uint32(time.Now().Unix()),
-		Kind:      event.KindTextNote,
+		Kind:      nostr.KindTextNote,
 		Tags:      tags,
 		Content:   opts["<content>"].(string),
 	})

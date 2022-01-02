@@ -7,20 +7,20 @@ import (
 	"time"
 
 	"github.com/dustin/go-humanize"
-	"github.com/fiatjaf/go-nostr/event"
-	"github.com/fiatjaf/go-nostr/relaypool"
+	"github.com/fiatjaf/go-nostr"
 	"gopkg.in/yaml.v2"
 )
 
 var kindNames = map[int]string{
-	event.KindSetMetadata:            "Profile Metadata",
-	event.KindTextNote:               "Text Note",
-	event.KindRecommendServer:        "Relay Recommendation",
-	event.KindContactList:            "Contact List",
-	event.KindEncryptedDirectMessage: "Encrypted Message",
+	nostr.KindSetMetadata:            "Profile Metadata",
+	nostr.KindTextNote:               "Text Note",
+	nostr.KindRecommendServer:        "Relay Recommendation",
+	nostr.KindContactList:            "Contact List",
+	nostr.KindEncryptedDirectMessage: "Encrypted Message",
+	nostr.KindDeletion:               "Deletion Notice",
 }
 
-func printEvent(evt event.Event) {
+func printEvent(evt nostr.Event) {
 	kind, ok := kindNames[evt.Kind]
 	if !ok {
 		kind = "Unknown Kind"
@@ -34,7 +34,7 @@ func printEvent(evt event.Event) {
 	)
 
 	switch evt.Kind {
-	case event.KindSetMetadata:
+	case nostr.KindSetMetadata:
 		var metadata map[string]interface{}
 		err := json.Unmarshal([]byte(evt.Content), &metadata)
 		if err != nil {
@@ -44,11 +44,11 @@ func printEvent(evt event.Event) {
 		}
 		y, _ := yaml.Marshal(metadata)
 		fmt.Print(string(y))
-	case event.KindTextNote:
+	case nostr.KindTextNote:
 		fmt.Print(strings.ReplaceAll(evt.Content, "\n", "\n  "))
-	case event.KindRecommendServer:
-	case event.KindContactList:
-	case event.KindEncryptedDirectMessage:
+	case nostr.KindRecommendServer:
+	case nostr.KindContactList:
+	case nostr.KindEncryptedDirectMessage:
 	default:
 		fmt.Print(evt.Content)
 	}
@@ -63,14 +63,14 @@ func shorten(id string) string {
 	return id[0:4] + "..." + id[len(id)-4:]
 }
 
-func printPublishStatus(event *event.Event, statuses chan relaypool.PublishStatus) {
+func printPublishStatus(event *nostr.Event, statuses chan nostr.PublishStatus) {
 	for status := range statuses {
 		switch status.Status {
-		case relaypool.PublishStatusSent:
+		case nostr.PublishStatusSent:
 			fmt.Printf("Sent event %s to '%s'.\n", event.ID, status.Relay)
-		case relaypool.PublishStatusFailed:
+		case nostr.PublishStatusFailed:
 			fmt.Printf("Failed to send event %s to '%s'.\n", event.ID, status.Relay)
-		case relaypool.PublishStatusSucceeded:
+		case nostr.PublishStatusSucceeded:
 			fmt.Printf("Seen %s on '%s'.\n", event.ID, status.Relay)
 		}
 	}
