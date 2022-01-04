@@ -8,9 +8,13 @@ import (
 )
 
 func view(opts docopt.Opts) {
+	id := opts["<id>"].(string)
+	if id == "" {
+		log.Println("provided event ID was empty")
+		return
+	}
 	initNostr()
 
-	id := opts["<id>"].(string)
 	sub := pool.Sub(nostr.EventFilters{{IDs: []string{id}}})
 
 	for event := range sub.UniqueEvents {

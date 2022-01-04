@@ -11,9 +11,10 @@ import (
 
 func setPrivateKey(opts docopt.Opts) {
 	keyhex := opts["<key>"].(string)
+	keylen := len(keyhex)
 
-	if len(keyhex) < 64 {
-		log.Print("key too short, must be 32 bytes hex-encoded, i.e. 64 characters.\n")
+	if keylen < 64 {
+		log.Printf("key too short was %d characters, must be 32 bytes hex-encoded, i.e. 64 characters.\n", keylen)
 		return
 	}
 
