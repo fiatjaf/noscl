@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/docopt/docopt-go"
 	"github.com/fiatjaf/go-nostr"
@@ -11,6 +12,10 @@ func showProfile(opts docopt.Opts) {
 	initNostr()
 
 	key := opts["<key>"].(string)
+	if key == "" {
+		log.Println("Profile key is empty! Exiting.")
+		return
+	}
 
 	sub := pool.Sub(nostr.EventFilters{{Authors: []string{key}}})
 	for event := range sub.UniqueEvents {
@@ -20,6 +25,11 @@ func showProfile(opts docopt.Opts) {
 
 func follow(opts docopt.Opts) {
 	key := opts["<key>"].(string)
+	if key == "" {
+		log.Println("Follow key is empty! Exiting.")
+		return
+	}
+
 	config.Following = append(config.Following, Follow{
 		Key: key,
 	})
@@ -28,6 +38,11 @@ func follow(opts docopt.Opts) {
 
 func unfollow(opts docopt.Opts) {
 	key := opts["<key>"].(string)
+	if key == "" {
+		log.Println("No unfollow key provided! Exiting.")
+		return
+	}
+
 	var newFollowingList []Follow
 	for _, follow := range config.Following {
 		if follow.Key == key {
