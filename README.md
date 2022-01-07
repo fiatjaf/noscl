@@ -30,7 +30,7 @@ Usage:
 
 The basic flow is something like
 
-1. Add some relays with `noscl relay add <relay url>` (see https://moonbreeze.richardbondi.net/nostr-registry/ for some publicly available relays)
+1. Add some relays with `noscl relay add <relay url>` (see https://nostr-registry.netlify.app/ for some publicly available relays)
 2. Follow some people with `noscl follow <pubkey>`
 3. Browse some profiles from people (you don't have to be following) with `noscl profile <pubkey>`
 4. See the feed of people you follow with `noscl home`
