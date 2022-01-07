@@ -23,6 +23,7 @@ Usage:
   noscl follow <key>
   noscl unfollow <key>
   noscl event <id>
+  noscl share-contacts
   noscl relay
   noscl relay add <url>
   noscl relay remove <url>
@@ -73,6 +74,8 @@ func main() {
 		showPublicKey(opts)
 	case opts["publish"].(bool):
 		publish(opts)
+	case opts["share-contacts"].(bool):
+		shareContacts(opts)
 	case opts["metadata"].(bool):
 		setMetadata(opts)
 	case opts["profile"].(bool):
