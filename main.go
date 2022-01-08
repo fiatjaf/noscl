@@ -24,6 +24,7 @@ Usage:
   noscl unfollow <key>
   noscl event <id>
   noscl share-contacts
+  noscl key-gen
   noscl relay
   noscl relay add <url>
   noscl relay remove <url>
@@ -76,6 +77,8 @@ func main() {
 		publish(opts)
 	case opts["share-contacts"].(bool):
 		shareContacts(opts)
+	case opts["key-gen"].(bool):
+		keyGen(opts)
 	case opts["metadata"].(bool):
 		setMetadata(opts)
 	case opts["profile"].(bool):

@@ -7,6 +7,8 @@ import (
 
 	"github.com/btcsuite/btcd/btcec"
 	"github.com/docopt/docopt-go"
+
+	"github.com/fiatjaf/go-nostr/nip06"
 )
 
 func setPrivateKey(opts docopt.Opts) {
@@ -46,4 +48,25 @@ func getPubKey(privateKey string) string {
 		_, pubkey := btcec.PrivKeyFromBytes(btcec.S256(), keyb)
 		return hex.EncodeToString(pubkey.X.Bytes())
 	}
+}
+
+func keyGen(opts docopt.Opts) {
+	seedWords, err := nip06.GenerateSeedWords()
+
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	seed := nip06.SeedFromWords(seedWords)
+
+	sk, err := nip06.PrivateKeyFromSeed(seed)
+
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	fmt.Println("seed:", seedWords)
+	fmt.Println("private key:", sk)
 }
