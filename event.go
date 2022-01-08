@@ -23,7 +23,7 @@ func view(opts docopt.Opts) {
 			continue
 		}
 
-		printEvent(event)
+		printEvent(event, nil)
 		break
 	}
 }

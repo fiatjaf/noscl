@@ -20,22 +20,30 @@ var kindNames = map[int]string{
 	nostr.KindDeletion:               "Deletion Notice",
 }
 
-func printEvent(evt nostr.Event) {
+func printEvent(evt nostr.Event, nick *string) {
 	kind, ok := kindNames[evt.Kind]
 	if !ok {
 		kind = "Unknown Kind"
 	}
 
+	var fromField string
+
+	if nick == nil {
+		fromField = shorten(evt.PubKey)
+	} else {
+		fromField = fmt.Sprintf("%s (%s)", *nick, shorten(evt.PubKey))
+	}
+
 	fmt.Printf("%s [%s] from %s %s\n  ",
 		kind,
 		shorten(evt.ID),
-		shorten(evt.PubKey),
+		fromField,
 		humanize.Time(time.Unix(int64(evt.CreatedAt), 0)),
 	)
 
 	switch evt.Kind {
 	case nostr.KindSetMetadata:
-		var metadata map[string]interface{}
+		var metadata Metadata
 		err := json.Unmarshal([]byte(evt.Content), &metadata)
 		if err != nil {
 			fmt.Printf("Invalid JSON: '%s',\n  %s",
