@@ -19,7 +19,7 @@ Usage:
   noscl publish [--reference=<id>] <content>
   noscl metadata --name=<name> [--description=<description>] [--image=<image>]
   noscl profile <key>
-  noscl follow <key>
+  noscl follow <key> [--name=<name>]
   noscl unfollow <key>
   noscl event <id>
   noscl relay

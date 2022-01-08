@@ -30,8 +30,15 @@ func follow(opts docopt.Opts) {
 		return
 	}
 
+	name, err := opts.String("--name")
+
+	if err != nil {
+		name = ""
+	}
+
 	config.Following = append(config.Following, Follow{
-		Key: key,
+		Key:  key,
+		Name: name,
 	})
 	fmt.Printf("Followed %s.\n", key)
 }
