@@ -26,6 +26,13 @@ func printEvent(evt nostr.Event, nick *string) {
 		kind = "Unknown Kind"
 	}
 
+	// Don't print encrypted messages that aren't for me
+	if evt.Kind == nostr.KindEncryptedDirectMessage {
+		if !evt.Tags.ContainsAny("p", nostr.StringList{getPubKey(config.PrivateKey)}) {
+			return
+		}
+	}
+
 	var fromField string
 
 	if nick == nil {
