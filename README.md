@@ -5,7 +5,7 @@ Command line client for [Nostr](https://github.com/fiatjaf/nostr).
 
 ## Installation
 
-Compile with `go get github.com/fiatjaf/noscl` or [download a binary](releases/).
+Compile with `go install github.com/fiatjaf/noscl@latest` or [download a binary](releases/).
 
 ## Usage
 
