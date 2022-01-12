@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"log"
 	"time"
 
@@ -16,9 +17,26 @@ func publish(opts docopt.Opts) {
 
 	initNostr()
 
-	tags := make(nostr.Tags, 0, 1)
-	if refid, err := opts.String("--reference"); err == nil {
-		tags = append(tags, nostr.Tag([]interface{}{"e", refid}))
+	tags := []nostr.Tag{}
+
+	references, err := optSlice(opts, "--reference")
+
+	if err != nil {
+		return
+	}
+
+	for _, ref := range references {
+		tags = append(tags, nostr.Tag([]interface{}{"e", ref}))
+	}
+
+	profiles, err := optSlice(opts, "--profile")
+
+	if err != nil {
+		return
+	}
+
+	for _, profile := range profiles {
+		tags = append(tags, nostr.Tag([]interface{}{"p", profile}))
 	}
 
 	event, statuses, err := pool.PublishEvent(&nostr.Event{
@@ -33,4 +51,15 @@ func publish(opts docopt.Opts) {
 	}
 
 	printPublishStatus(event, statuses)
+}
+
+func optSlice(opts docopt.Opts, key string) ([]string, error) {
+	if v, ok := opts[key]; ok {
+		vals, ok := v.([]string)
+		if ok {
+			return vals, nil
+		}
+	}
+
+	return []string{}, errors.New("unable to find opt")
 }
