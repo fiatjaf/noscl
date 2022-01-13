@@ -16,6 +16,8 @@ const USAGE = `noscl
 Usage:
   noscl home
   noscl setprivate <key>
+  noscl sign <event-json>
+  noscl verify <event-json>
   noscl public
   noscl publish [--reference=<id>...] [--profile=<id>...] <content>
   noscl metadata --name=<name> [--description=<description>] [--image=<image>]
@@ -68,9 +70,12 @@ func main() {
 		home(opts)
 	case opts["setprivate"].(bool):
 		// TODO make this read STDIN and encrypt the key locally
-		// TODO also accept BIP39
 		setPrivateKey(opts)
 		saveConfig(path)
+	case opts["sign"].(bool):
+		signEventJSON(opts)
+	case opts["verify"].(bool):
+		verifyEventJSON(opts)
 	case opts["public"].(bool):
 		showPublicKey(opts)
 	case opts["publish"].(bool):

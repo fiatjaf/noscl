@@ -11,7 +11,7 @@ import (
 
 func publish(opts docopt.Opts) {
 	if config.PrivateKey == "" {
-		log.Printf("No private key set.\n")
+		log.Printf("Can't publish. Private key not set.\n")
 		return
 	}
 
