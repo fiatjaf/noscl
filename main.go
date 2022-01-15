@@ -19,7 +19,8 @@ Usage:
   noscl sign <event-json>
   noscl verify <event-json>
   noscl public
-  noscl publish [--reference=<id>...] [--profile=<id>...] <content>
+  noscl publish [--reference=<id>...] [--profile=<id>...] [--pow=<n>] <content>
+  noscl pow <n> <id>
   noscl metadata --name=<name> [--description=<description>] [--image=<image>]
   noscl profile <key>
   noscl follow <key> [--name=<name>]
@@ -80,6 +81,8 @@ func main() {
 		showPublicKey(opts)
 	case opts["publish"].(bool):
 		publish(opts)
+	case opts["pow"].(bool):
+		pow(opts)
 	case opts["share-contacts"].(bool):
 		shareContacts(opts)
 	case opts["key-gen"].(bool):
