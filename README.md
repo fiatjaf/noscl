@@ -49,3 +49,11 @@ private key: 5a860fa953c9162611f2e2813ee0526370664534412f31611a4a89149c6bbc9d
 
 $ noscl setprivate 5a860fa953c9162611f2e2813ee0526370664534412f31611a4a89149c6bbc9d
 ```
+
+## Sign an event manually
+
+```
+noscl sign '{...event as JSON}'
+```
+
+https://user-images.githubusercontent.com/1653275/149637925-32943e2e-a2ff-41a0-9e3d-5ea1a60c84ae.mp4
