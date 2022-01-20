@@ -22,7 +22,7 @@ Usage:
   noscl follow <key> [--name=<name>]
   noscl unfollow <key>
   noscl event <id>
-  noscl share-contants
+  noscl share-contacts
   noscl key-gen
   noscl relay
   noscl relay add <url>
