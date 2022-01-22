@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/hex"
 	"errors"
 	"log"
 	"time"
@@ -39,12 +40,27 @@ func publish(opts docopt.Opts) {
 		tags = append(tags, nostr.Tag([]interface{}{"p", profile}))
 	}
 
-	event, statuses, err := pool.PublishEvent(&nostr.Event{
+	evt := &nostr.Event{
 		CreatedAt: uint32(time.Now().Unix()),
 		Kind:      nostr.KindTextNote,
-		Tags:      tags,
 		Content:   opts["<content>"].(string),
-	})
+		Tags:      tags,
+	}
+
+	evt, err = pool.SignEvent(evt)
+	if err != nil {
+		log.Printf("Error signing: %s.\n", err.Error())
+		return
+	}
+
+	if n, err := opts.Int("--pow"); err == nil {
+		message, _ := hex.DecodeString(evt.ID)
+		if nonce, err := powScrypt(message, n); err == nil {
+			evt.Pow = [][]string{{"scrypt", hex.EncodeToString(nonce)}}
+		}
+	}
+
+	event, statuses, err := pool.PublishEvent(evt)
 	if err != nil {
 		log.Printf("Error publishing: %s.\n", err.Error())
 		return
