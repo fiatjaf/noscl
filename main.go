@@ -20,7 +20,7 @@ Usage:
   noscl verify <event-json>
   noscl public
   noscl publish [--reference=<id>...] [--profile=<id>...] <content>
-  noscl metadata --name=<name> [--description=<description>] [--image=<image>]
+  noscl metadata --name=<name> [--about=<about>] [--picture=<picture>]
   noscl profile <key>
   noscl follow <key> [--name=<name>]
   noscl unfollow <key>
