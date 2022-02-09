@@ -20,6 +20,7 @@ Usage:
   noscl verify <event-json>
   noscl public
   noscl publish [--reference=<id>...] [--profile=<id>...] <content>
+  noscl message [--reference=<id>...] <id> <content>
   noscl metadata --name=<name> [--about=<about>] [--picture=<picture>]
   noscl profile <key>
   noscl follow <key> [--name=<name>]
@@ -80,6 +81,8 @@ func main() {
 		showPublicKey(opts)
 	case opts["publish"].(bool):
 		publish(opts)
+	case opts["message"].(bool):
+		message(opts)
 	case opts["share-contacts"].(bool):
 		shareContacts(opts)
 	case opts["key-gen"].(bool):
