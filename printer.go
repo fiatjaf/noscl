@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/dustin/go-humanize"
 	"github.com/fiatjaf/go-nostr"
@@ -45,7 +44,7 @@ func printEvent(evt nostr.Event, nick *string) {
 		kind,
 		shorten(evt.ID),
 		fromField,
-		humanize.Time(time.Unix(int64(evt.CreatedAt), 0)),
+		humanize.Time(evt.CreatedAt),
 	)
 
 	switch evt.Kind {

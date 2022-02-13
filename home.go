@@ -28,7 +28,7 @@ func home(opts docopt.Opts) {
 		}
 	}
 
-	sub := pool.Sub(nostr.EventFilters{{Authors: keys}})
+	sub := pool.Sub(nostr.Filters{{Authors: keys}})
 
 	for event := range sub.UniqueEvents {
 		// Do we have a nick for the author of this message?

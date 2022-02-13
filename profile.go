@@ -17,7 +17,7 @@ func showProfile(opts docopt.Opts) {
 		return
 	}
 
-	sub := pool.Sub(nostr.EventFilters{{Authors: []string{key}}})
+	sub := pool.Sub(nostr.Filters{{Authors: []string{key}}})
 	for event := range sub.UniqueEvents {
 		printEvent(event, nil)
 	}

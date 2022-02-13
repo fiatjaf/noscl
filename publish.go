@@ -17,7 +17,7 @@ func publish(opts docopt.Opts) {
 
 	initNostr()
 
-	tags := []nostr.Tag{}
+	var tags nostr.Tags
 
 	references, err := optSlice(opts, "--reference")
 
@@ -26,7 +26,7 @@ func publish(opts docopt.Opts) {
 	}
 
 	for _, ref := range references {
-		tags = append(tags, nostr.Tag([]interface{}{"e", ref}))
+		tags = append(tags, nostr.StringList{"e", ref})
 	}
 
 	profiles, err := optSlice(opts, "--profile")
@@ -36,11 +36,11 @@ func publish(opts docopt.Opts) {
 	}
 
 	for _, profile := range profiles {
-		tags = append(tags, nostr.Tag([]interface{}{"p", profile}))
+		tags = append(tags, nostr.StringList{"p", profile})
 	}
 
 	event, statuses, err := pool.PublishEvent(&nostr.Event{
-		CreatedAt: uint32(time.Now().Unix()),
+		CreatedAt: time.Now(),
 		Kind:      nostr.KindTextNote,
 		Tags:      tags,
 		Content:   opts["<content>"].(string),

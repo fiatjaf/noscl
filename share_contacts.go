@@ -21,19 +21,18 @@ func shareContacts(opts docopt.Opts) {
 
 	initNostr()
 
-	tags := []nostr.Tag{}
-
+	var tags nostr.Tags
 	for _, follow := range config.Following {
 		relay := ""
 		if len(follow.Relays) > 0 {
 			relay = follow.Relays[0]
 		}
-		tag := nostr.Tag([]interface{}{"p", follow.Key, relay, follow.Name})
+		tag := nostr.StringList{"p", follow.Key, relay, follow.Name}
 		tags = append(tags, tag)
 	}
 
 	event, statuses, err := pool.PublishEvent(&nostr.Event{
-		CreatedAt: uint32(time.Now().Unix()),
+		CreatedAt: time.Now(),
 		Kind:      nostr.KindContactList,
 		Tags:      tags,
 		Content:   "",

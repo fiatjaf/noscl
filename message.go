@@ -17,16 +17,16 @@ func message(opts docopt.Opts) {
 
 	initNostr()
 
-	tags := []nostr.Tag{}
+	var tags nostr.Tags
 	receiverID := opts["<id>"].(string)
-	tags = append(tags, nostr.Tag([]interface{}{"p", receiverID}))
+	tags = append(tags, nostr.StringList{"p", receiverID})
 
 	references, err := optSlice(opts, "--reference")
 	if err != nil {
 		return
 	}
 	for _, ref := range references {
-		tags = append(tags, nostr.Tag([]interface{}{"e", ref}))
+		tags = append(tags, nostr.StringList{"e", ref})
 	}
 
 	// parse and encrypt content
@@ -44,7 +44,7 @@ func message(opts docopt.Opts) {
 	}
 
 	event, statuses, err := pool.PublishEvent(&nostr.Event{
-		CreatedAt: uint32(time.Now().Unix()),
+		CreatedAt: time.Now(),
 		Kind:      nostr.KindEncryptedDirectMessage,
 		Tags:      tags,
 		Content:   encryptedMessage,

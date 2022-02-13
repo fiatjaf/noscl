@@ -15,7 +15,7 @@ func view(opts docopt.Opts) {
 	}
 	initNostr()
 
-	sub := pool.Sub(nostr.EventFilters{{IDs: []string{id}}})
+	sub := pool.Sub(nostr.Filters{{IDs: []string{id}}})
 
 	for event := range sub.UniqueEvents {
 		if event.ID != id {

@@ -30,7 +30,7 @@ func setMetadata(opts docopt.Opts) {
 
 	event, statuses, err := pool.PublishEvent(&nostr.Event{
 		PubKey:    getPubKey(config.PrivateKey),
-		CreatedAt: uint32(time.Now().Unix()),
+		CreatedAt: time.Now(),
 		Kind:      nostr.KindSetMetadata,
 		Tags:      make(nostr.Tags, 0),
 		Content:   string(jmetadata),
