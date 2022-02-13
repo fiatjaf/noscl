@@ -49,7 +49,9 @@ func verifyEventJSON(opts docopt.Opts) {
 	}
 
 	if ok, err := event.CheckSignature(); err != nil {
-		log.Printf("Failed to verify: %s.\n", err.Error())
+		fmt.Printf("Serialized: %s\n", event.Serialize())
+		fmt.Printf("Hash: %s\n", event.GetID())
+		fmt.Printf("Failed to verify: %s.\n", err.Error())
 		return
 	} else if !ok {
 		fmt.Printf("Signature is invalid.\n")
