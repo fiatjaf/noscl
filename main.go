@@ -20,11 +20,11 @@ Usage:
   noscl verify <event-json>
   noscl public
   noscl publish [--reference=<id>...] [--profile=<id>...] <content>
-  noscl message [--reference=<id>...] <id> <content>
+  noscl message [--reference=<id>...] <pubkey> <content>
   noscl metadata --name=<name> [--about=<about>] [--picture=<picture>]
-  noscl profile <key>
-  noscl follow <key> [--name=<name>]
-  noscl unfollow <key>
+  noscl profile <pubkey>
+  noscl follow <pubkey> [--name=<name>]
+  noscl unfollow <pubkey>
   noscl event <id>
   noscl share-contacts
   noscl key-gen

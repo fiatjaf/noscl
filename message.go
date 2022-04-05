@@ -18,8 +18,8 @@ func message(opts docopt.Opts) {
 	initNostr()
 
 	var tags nostr.Tags
-	receiverID := opts["<id>"].(string)
-	tags = append(tags, nostr.StringList{"p", receiverID})
+	receiverKey := opts["<pubkey>"].(string)
+	tags = append(tags, nostr.StringList{"p", receiverKey})
 
 	references, err := optSlice(opts, "--reference")
 	if err != nil {
@@ -31,7 +31,7 @@ func message(opts docopt.Opts) {
 
 	// parse and encrypt content
 	message := opts["<content>"].(string)
-	sharedSecret, err := nip04.ComputeSharedSecret(config.PrivateKey, receiverID)
+	sharedSecret, err := nip04.ComputeSharedSecret(config.PrivateKey, receiverKey)
 	if err != nil {
 		log.Printf("Error computing shared key: %s. \n", err.Error())
 		return

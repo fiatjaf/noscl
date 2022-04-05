@@ -11,7 +11,7 @@ import (
 func showProfile(opts docopt.Opts) {
 	initNostr()
 
-	key := opts["<key>"].(string)
+	key := opts["<pubkey>"].(string)
 	if key == "" {
 		log.Println("Profile key is empty! Exiting.")
 		return
@@ -24,7 +24,7 @@ func showProfile(opts docopt.Opts) {
 }
 
 func follow(opts docopt.Opts) {
-	key := opts["<key>"].(string)
+	key := opts["<pubkey>"].(string)
 	if key == "" {
 		log.Println("Follow key is empty! Exiting.")
 		return
@@ -44,7 +44,7 @@ func follow(opts docopt.Opts) {
 }
 
 func unfollow(opts docopt.Opts) {
-	key := opts["<key>"].(string)
+	key := opts["<pubkey>"].(string)
 	if key == "" {
 		log.Println("No unfollow key provided! Exiting.")
 		return
