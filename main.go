@@ -14,7 +14,7 @@ import (
 const USAGE = `noscl
 
 Usage:
-  noscl home
+  noscl home [--verbose]
   noscl setprivate <key>
   noscl sign <event-json>
   noscl verify <event-json>
@@ -22,10 +22,10 @@ Usage:
   noscl publish [--reference=<id>...] [--profile=<id>...] <content>
   noscl message [--reference=<id>...] <pubkey> <content>
   noscl metadata --name=<name> [--about=<about>] [--picture=<picture>]
-  noscl profile <pubkey>
+  noscl profile [--verbose] <pubkey>
   noscl follow <pubkey> [--name=<name>]
   noscl unfollow <pubkey>
-  noscl event <id>
+  noscl event [--verbose] <id>
   noscl share-contacts
   noscl key-gen
   noscl relay

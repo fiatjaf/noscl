@@ -16,6 +16,8 @@ func home(opts docopt.Opts) {
 
 	initNostr()
 
+	verbose, _ := opts.Bool("--verbose")
+
 	var keys []string
 
 	nameMap := map[string]string{}
@@ -55,6 +57,6 @@ func home(opts docopt.Opts) {
 			}
 		}
 
-		printEvent(event, &nick)
+		printEvent(event, &nick, verbose)
 	}
 }
