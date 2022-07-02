@@ -8,6 +8,7 @@ import (
 )
 
 func view(opts docopt.Opts) {
+	verbose, _ := opts.Bool("--verbose")
 	id := opts["<id>"].(string)
 	if id == "" {
 		log.Println("provided event ID was empty")
@@ -23,7 +24,7 @@ func view(opts docopt.Opts) {
 			continue
 		}
 
-		printEvent(event, nil)
+		printEvent(event, nil, verbose)
 		break
 	}
 }

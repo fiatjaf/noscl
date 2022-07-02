@@ -11,6 +11,7 @@ import (
 func showProfile(opts docopt.Opts) {
 	initNostr()
 
+	verbose, _ := opts.Bool("--verbose")
 	key := opts["<pubkey>"].(string)
 	if key == "" {
 		log.Println("Profile key is empty! Exiting.")
@@ -19,7 +20,7 @@ func showProfile(opts docopt.Opts) {
 
 	sub := pool.Sub(nostr.Filters{{Authors: []string{key}}})
 	for event := range sub.UniqueEvents {
-		printEvent(event, nil)
+		printEvent(event, nil, verbose)
 	}
 }
 

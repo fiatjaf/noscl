@@ -19,7 +19,7 @@ var kindNames = map[int]string{
 	nostr.KindDeletion:               "Deletion Notice",
 }
 
-func printEvent(evt nostr.Event, nick *string) {
+func printEvent(evt nostr.Event, nick *string, verbose bool) {
 	kind, ok := kindNames[evt.Kind]
 	if !ok {
 		kind = "Unknown Kind"
@@ -32,17 +32,26 @@ func printEvent(evt nostr.Event, nick *string) {
 		}
 	}
 
-	var fromField string
+	var ID string = shorten(evt.ID)
+	var fromField string = shorten(evt.PubKey)
 
-	if nick == nil {
-		fromField = shorten(evt.PubKey)
-	} else {
+	if nick != nil {
 		fromField = fmt.Sprintf("%s (%s)", *nick, shorten(evt.PubKey))
+	}
+
+	if verbose {
+		ID = evt.ID
+
+		if nick == nil {
+			fromField = evt.PubKey
+		} else {
+			fromField = fmt.Sprintf("%s (%s)", *nick, evt.PubKey)
+		}
 	}
 
 	fmt.Printf("%s [%s] from %s %s\n  ",
 		kind,
-		shorten(evt.ID),
+		ID,
 		fromField,
 		humanize.Time(evt.CreatedAt),
 	)
