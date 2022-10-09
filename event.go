@@ -8,7 +8,7 @@ import (
 	"github.com/fiatjaf/go-nostr"
 )
 
-func view(opts docopt.Opts) {
+func viewEvent(opts docopt.Opts) {
 	verbose, _ := opts.Bool("--verbose")
 	id := opts["<id>"].(string)
 	if id == "" {
@@ -33,8 +33,8 @@ func view(opts docopt.Opts) {
 func deleteEvent(opts docopt.Opts) {
 	initNostr()
 
-	eventid := opts["<eventid>"].(string)
-	if eventid == "" {
+	id := opts["<id>"].(string)
+	if id == "" {
 		log.Println("Event id is empty! Exiting.")
 		return
 	}
@@ -42,7 +42,7 @@ func deleteEvent(opts docopt.Opts) {
 	event, statuses, err := pool.PublishEvent(&nostr.Event{
 		CreatedAt: time.Now(),
 		Kind:      nostr.KindDeletion,
-		Tags:      nostr.Tags{nostr.StringList{"e", eventid}},
+		Tags:      nostr.Tags{nostr.StringList{"e", id}},
 	})
 	if err != nil {
 		log.Printf("Error publishing: %s.\n", err.Error())

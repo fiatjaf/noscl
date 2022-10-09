@@ -25,14 +25,14 @@ Usage:
   noscl profile [--verbose] <pubkey>
   noscl follow <pubkey> [--name=<name>]
   noscl unfollow <pubkey>
-  noscl event [--verbose] <id>
+  noscl event view [--verbose] <id>
+  noscl event delete <id>
   noscl share-contacts
   noscl key-gen
   noscl relay
   noscl relay add <url>
   noscl relay remove <url>
   noscl relay recommend <url>
-  noscl delete <eventid>
 `
 
 func main() {
@@ -98,10 +98,13 @@ func main() {
 	case opts["unfollow"].(bool):
 		unfollow(opts)
 		saveConfig(path)
-	case opts["delete"].(bool):
-		deleteEvent(opts)
 	case opts["event"].(bool):
-		view(opts)
+		switch {
+		case opts["view"].(bool):
+			viewEvent(opts)
+		case opts["delete"].(bool):
+			deleteEvent(opts)
+		}
 	case opts["relay"].(bool):
 		switch {
 		case opts["add"].(bool):
