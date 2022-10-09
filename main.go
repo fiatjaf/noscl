@@ -32,6 +32,7 @@ Usage:
   noscl relay add <url>
   noscl relay remove <url>
   noscl relay recommend <url>
+  noscl delete <eventid>
 `
 
 func main() {
@@ -97,6 +98,8 @@ func main() {
 	case opts["unfollow"].(bool):
 		unfollow(opts)
 		saveConfig(path)
+	case opts["delete"].(bool):
+		deleteEvent(opts)
 	case opts["event"].(bool):
 		view(opts)
 	case opts["relay"].(bool):
