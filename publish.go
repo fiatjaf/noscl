@@ -39,11 +39,18 @@ func publish(opts docopt.Opts) {
 		tags = append(tags, nostr.StringList{"p", profile})
 	}
 
+	content := opts["<content>"].(string)
+	if content == "-" {
+		content, err = readContentStdin(4096)
+		if err != nil {
+			log.Printf("Failed reading content from stdin: %s", err)
+		}
+	}
 	event, statuses, err := pool.PublishEvent(&nostr.Event{
 		CreatedAt: time.Now(),
 		Kind:      nostr.KindTextNote,
 		Tags:      tags,
-		Content:   opts["<content>"].(string),
+		Content:   content,
 	})
 	if err != nil {
 		log.Printf("Error publishing: %s.\n", err.Error())

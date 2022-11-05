@@ -33,6 +33,9 @@ Usage:
   noscl relay add <url>
   noscl relay remove <url>
   noscl relay recommend <url>
+
+Specify <content> as '-' to make the publish or message command read it
+from stdin.
 `
 
 func main() {

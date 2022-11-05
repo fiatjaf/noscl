@@ -31,6 +31,12 @@ func message(opts docopt.Opts) {
 
 	// parse and encrypt content
 	message := opts["<content>"].(string)
+	if message == "-" {
+		message, err = readContentStdin(4096)
+		if err != nil {
+			log.Printf("Failed reading content from stdin: %s", err)
+		}
+	}
 	sharedSecret, err := nip04.ComputeSharedSecret(config.PrivateKey, receiverKey)
 	if err != nil {
 		log.Printf("Error computing shared key: %s. \n", err.Error())
