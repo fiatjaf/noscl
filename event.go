@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/docopt/docopt-go"
-	"github.com/fiatjaf/go-nostr"
+	"github.com/nbd-wtf/go-nostr"
 )
 
 func viewEvent(opts docopt.Opts) {

@@ -6,8 +6,8 @@ require (
 	github.com/btcsuite/btcd v0.22.1
 	github.com/docopt/docopt-go v0.0.0-20180111231733-ee0de3bc6815
 	github.com/dustin/go-humanize v1.0.0
-	github.com/fiatjaf/go-nostr v0.8.1
 	github.com/mitchellh/go-homedir v1.1.0
+	github.com/nbd-wtf/go-nostr v0.8.1
 	gopkg.in/yaml.v2 v2.2.2
 )
 

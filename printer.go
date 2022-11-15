@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/dustin/go-humanize"
-	"github.com/fiatjaf/go-nostr"
+	"github.com/nbd-wtf/go-nostr"
 	"gopkg.in/yaml.v2"
 )
 

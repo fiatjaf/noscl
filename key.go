@@ -8,7 +8,7 @@ import (
 	"github.com/btcsuite/btcd/btcec"
 	"github.com/docopt/docopt-go"
 
-	"github.com/fiatjaf/go-nostr/nip06"
+	"github.com/nbd-wtf/go-nostr/nip06"
 )
 
 func setPrivateKey(opts docopt.Opts) {

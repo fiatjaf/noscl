@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/docopt/docopt-go"
-	"github.com/fiatjaf/go-nostr"
-	"github.com/fiatjaf/go-nostr/nip04"
+	"github.com/nbd-wtf/go-nostr"
+	"github.com/nbd-wtf/go-nostr/nip04"
 )
 
 func message(opts docopt.Opts) {

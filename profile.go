@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/docopt/docopt-go"
-	"github.com/fiatjaf/go-nostr"
+	"github.com/nbd-wtf/go-nostr"
 )
 
 func showProfile(opts docopt.Opts) {
