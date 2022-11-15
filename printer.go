@@ -49,7 +49,7 @@ func printEvent(evt nostr.Event, nick *string, verbose bool) {
 		}
 	}
 
-	fmt.Printf("%s [%s] from %s %s\n  ",
+	fmt.Printf("%s [%s] from %s %s\n",
 		kind,
 		ID,
 		fromField,
@@ -66,9 +66,14 @@ func printEvent(evt nostr.Event, nick *string, verbose bool) {
 			return
 		}
 		y, _ := yaml.Marshal(metadata)
-		fmt.Print(string(y))
+		spl := strings.Split(string(y), "\n")
+		for i, v := range spl {
+			spl[i] = "  " + v
+		}
+		str := strings.Join(spl, "\n")
+		fmt.Print(str)
 	case nostr.KindTextNote:
-		fmt.Print(strings.ReplaceAll(evt.Content, "\n", "\n  "))
+		fmt.Print("  " + strings.ReplaceAll(evt.Content, "\n", "\n  "))
 	case nostr.KindRecommendServer:
 	case nostr.KindContactList:
 	case nostr.KindEncryptedDirectMessage:

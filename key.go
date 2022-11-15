@@ -9,6 +9,7 @@ import (
 	"github.com/docopt/docopt-go"
 
 	"github.com/nbd-wtf/go-nostr/nip06"
+	"github.com/nbd-wtf/go-nostr/nip19"
 )
 
 func setPrivateKey(opts docopt.Opts) {
@@ -37,6 +38,9 @@ func showPublicKey(opts docopt.Opts) {
 	pubkey := getPubKey(config.PrivateKey)
 	if pubkey != "" {
 		fmt.Printf("%s\n", pubkey)
+
+		nip19pubkey, _ := nip19.EncodePublicKey(pubkey, "")
+		fmt.Printf("%s\n", nip19pubkey)
 	}
 }
 
@@ -52,7 +56,6 @@ func getPubKey(privateKey string) string {
 
 func keyGen(opts docopt.Opts) {
 	seedWords, err := nip06.GenerateSeedWords()
-
 	if err != nil {
 		log.Println(err)
 		return
@@ -61,7 +64,6 @@ func keyGen(opts docopt.Opts) {
 	seed := nip06.SeedFromWords(seedWords)
 
 	sk, err := nip06.PrivateKeyFromSeed(seed)
-
 	if err != nil {
 		log.Println(err)
 		return

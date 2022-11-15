@@ -6,26 +6,27 @@ import (
 
 	"github.com/docopt/docopt-go"
 	"github.com/nbd-wtf/go-nostr"
+	"github.com/nbd-wtf/go-nostr/nip19"
 )
 
 func showProfile(opts docopt.Opts) {
-	initNostr()
-
 	verbose, _ := opts.Bool("--verbose")
-	key := opts["<pubkey>"].(string)
+	key := nip19.TranslatePublicKey(opts["<pubkey>"].(string))
 	if key == "" {
 		log.Println("Profile key is empty! Exiting.")
 		return
 	}
 
-	_, _, unique := pool.Sub(nostr.Filters{{Authors: []string{key}}})
-	for event := range unique {
+	initNostr()
+
+	_, all := pool.Sub(nostr.Filters{{Authors: []string{key}, Kinds: []int{0}}})
+	for event := range nostr.Unique(all) {
 		printEvent(event, nil, verbose)
 	}
 }
 
 func follow(opts docopt.Opts) {
-	key := opts["<pubkey>"].(string)
+	key := nip19.TranslatePublicKey(opts["<pubkey>"].(string))
 	if key == "" {
 		log.Println("Follow key is empty! Exiting.")
 		return
@@ -44,7 +45,7 @@ func follow(opts docopt.Opts) {
 }
 
 func unfollow(opts docopt.Opts) {
-	key := opts["<pubkey>"].(string)
+	key := nip19.TranslatePublicKey(opts["<pubkey>"].(string))
 	if key == "" {
 		log.Println("No unfollow key provided! Exiting.")
 		return

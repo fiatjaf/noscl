@@ -30,9 +30,8 @@ func home(opts docopt.Opts) {
 		}
 	}
 
-	_, _, unique := pool.Sub(nostr.Filters{{Authors: keys}})
-
-	for event := range unique {
+	_, all := pool.Sub(nostr.Filters{{Authors: keys}})
+	for event := range nostr.Unique(all) {
 		// Do we have a nick for the author of this message?
 		nick, ok := nameMap[event.PubKey]
 

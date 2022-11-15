@@ -12,10 +12,11 @@ func initNostr() {
 	pool = nostr.NewRelayPool()
 
 	for relay, policy := range config.Relays {
-		err := pool.Add(relay, nostr.SimplePolicy{
+		cherr := pool.Add(relay, nostr.SimplePolicy{
 			Read:  policy.Read,
 			Write: policy.Write,
 		})
+		err := <-cherr
 		if err != nil {
 			log.Printf("error adding relay '%s': %s", relay, err.Error())
 		}
@@ -26,7 +27,7 @@ func initNostr() {
 		hasRelays = true
 		return false
 	})
-	if hasRelays {
+	if !hasRelays {
 		log.Printf("You have zero relays configured, everything will probably fail.")
 	}
 

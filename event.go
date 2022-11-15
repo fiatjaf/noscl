@@ -17,9 +17,8 @@ func viewEvent(opts docopt.Opts) {
 	}
 	initNostr()
 
-	_, _, unique := pool.Sub(nostr.Filters{{IDs: []string{id}}})
-
-	for event := range unique {
+	_, all := pool.Sub(nostr.Filters{{IDs: []string{id}}})
+	for event := range nostr.Unique(all) {
 		if event.ID != id {
 			log.Printf("got unexpected event %s.\n", event.ID)
 			continue
