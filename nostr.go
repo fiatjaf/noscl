@@ -21,7 +21,12 @@ func initNostr() {
 		}
 	}
 
-	if len(pool.Relays) == 0 {
+	hasRelays := false
+	pool.Relays.Range(func(_ string, _ *nostr.Relay) bool {
+		hasRelays = true
+		return false
+	})
+	if hasRelays {
 		log.Printf("You have zero relays configured, everything will probably fail.")
 	}
 

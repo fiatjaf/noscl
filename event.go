@@ -17,9 +17,9 @@ func viewEvent(opts docopt.Opts) {
 	}
 	initNostr()
 
-	sub := pool.Sub(nostr.Filters{{IDs: []string{id}}})
+	_, _, unique := pool.Sub(nostr.Filters{{IDs: []string{id}}})
 
-	for event := range sub.UniqueEvents {
+	for event := range unique {
 		if event.ID != id {
 			log.Printf("got unexpected event %s.\n", event.ID)
 			continue
@@ -42,7 +42,7 @@ func deleteEvent(opts docopt.Opts) {
 	event, statuses, err := pool.PublishEvent(&nostr.Event{
 		CreatedAt: time.Now(),
 		Kind:      nostr.KindDeletion,
-		Tags:      nostr.Tags{nostr.StringList{"e", id}},
+		Tags:      nostr.Tags{nostr.Tag{"e", id}},
 	})
 	if err != nil {
 		log.Printf("Error publishing: %s.\n", err.Error())

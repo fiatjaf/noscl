@@ -19,14 +19,14 @@ func message(opts docopt.Opts) {
 
 	var tags nostr.Tags
 	receiverKey := opts["<pubkey>"].(string)
-	tags = append(tags, nostr.StringList{"p", receiverKey})
+	tags = append(tags, nostr.Tag{"p", receiverKey})
 
 	references, err := optSlice(opts, "--reference")
 	if err != nil {
 		return
 	}
 	for _, ref := range references {
-		tags = append(tags, nostr.StringList{"e", ref})
+		tags = append(tags, nostr.Tag{"e", ref})
 	}
 
 	// parse and encrypt content

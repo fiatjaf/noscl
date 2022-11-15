@@ -20,23 +20,21 @@ func publish(opts docopt.Opts) {
 	var tags nostr.Tags
 
 	references, err := optSlice(opts, "--reference")
-
 	if err != nil {
 		return
 	}
 
 	for _, ref := range references {
-		tags = append(tags, nostr.StringList{"e", ref})
+		tags = append(tags, nostr.Tag{"e", ref})
 	}
 
 	profiles, err := optSlice(opts, "--profile")
-
 	if err != nil {
 		return
 	}
 
 	for _, profile := range profiles {
-		tags = append(tags, nostr.StringList{"p", profile})
+		tags = append(tags, nostr.Tag{"p", profile})
 	}
 
 	content := opts["<content>"].(string)

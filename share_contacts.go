@@ -27,7 +27,7 @@ func shareContacts(opts docopt.Opts) {
 		if len(follow.Relays) > 0 {
 			relay = follow.Relays[0]
 		}
-		tag := nostr.StringList{"p", follow.Key, relay, follow.Name}
+		tag := nostr.Tag{"p", follow.Key, relay, follow.Name}
 		tags = append(tags, tag)
 	}
 

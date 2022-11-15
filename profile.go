@@ -18,8 +18,8 @@ func showProfile(opts docopt.Opts) {
 		return
 	}
 
-	sub := pool.Sub(nostr.Filters{{Authors: []string{key}}})
-	for event := range sub.UniqueEvents {
+	_, _, unique := pool.Sub(nostr.Filters{{Authors: []string{key}}})
+	for event := range unique {
 		printEvent(event, nil, verbose)
 	}
 }
@@ -32,7 +32,6 @@ func follow(opts docopt.Opts) {
 	}
 
 	name, err := opts.String("--name")
-
 	if err != nil {
 		name = ""
 	}
