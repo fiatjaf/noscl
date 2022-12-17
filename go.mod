@@ -28,5 +28,3 @@ require (
 	golang.org/x/exp v0.0.0-20221106115401-f9659909a136 // indirect
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 )
-
-replace github.com/nbd-wtf/go-nostr => /home/fiatjaf/comp/go-nostr
