@@ -65,7 +65,7 @@ func main() {
 	config.Init()
 
 	// parse args
-	opts, err := docopt.ParseDoc(USAGE)
+	opts, err := docopt.ParseArgs(USAGE, flag.Args(), "")
 	if err != nil {
 		return
 	}
