@@ -3,6 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/nbd-wtf/go-nostr/nip04"
+	"log"
 	"strings"
 
 	"github.com/dustin/go-humanize"
@@ -77,6 +79,18 @@ func printEvent(evt nostr.Event, nick *string, verbose bool) {
 	case nostr.KindRecommendServer:
 	case nostr.KindContactList:
 	case nostr.KindEncryptedDirectMessage:
+		sharedSecret, err := nip04.ComputeSharedSecret(config.PrivateKey, evt.PubKey)
+		if err != nil {
+			log.Printf("Error computing shared key: %s. \n", err.Error())
+			return
+		}
+		txt, err := nip04.Decrypt(evt.Content, sharedSecret)
+		if err != nil {
+			log.Printf("Error decrypting message: %s. \n", err.Error())
+			return
+		}
+		fmt.Print(txt)
+
 	default:
 		fmt.Print(evt.Content)
 	}
