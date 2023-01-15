@@ -37,10 +37,10 @@ func follow(opts docopt.Opts) {
 		name = ""
 	}
 
-	config.Following = append(config.Following, Follow{
+        config.Following[key] = Follow{
 		Key:  key,
 		Name: name,
-	})
+	}
 	fmt.Printf("Followed %s.\n", key)
 }
 
@@ -51,13 +51,6 @@ func unfollow(opts docopt.Opts) {
 		return
 	}
 
-	var newFollowingList []Follow
-	for _, follow := range config.Following {
-		if follow.Key == key {
-			continue
-		}
-		newFollowingList = append(newFollowingList, follow)
-	}
-	config.Following = newFollowingList
+	delete(config.Following, key)
 	fmt.Printf("Unfollowed %s.\n", key)
 }

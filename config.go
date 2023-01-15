@@ -5,7 +5,7 @@ var config Config
 type Config struct {
 	DataDir    string            `json:"-"`
 	Relays     map[string]Policy `json:"relays,flow"`
-	Following  []Follow          `json:"following,flow"`
+	Following  map[string]Follow `json:"following,flow"`
 	PrivateKey string            `json:"privatekey,omitempty"`
 }
 
@@ -34,5 +34,8 @@ func (p Policy) String() string {
 func (c *Config) Init() {
 	if c.Relays == nil {
 		c.Relays = make(map[string]Policy)
+	}
+	if c.Following == nil {
+		c.Following = make(map[string]Follow)
 	}
 }
