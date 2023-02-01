@@ -27,6 +27,7 @@ Usage:
   noscl unfollow <pubkey>
   noscl event view [--verbose] <id>
   noscl event delete <id>
+  noscl setprivate <hex private key>
   noscl share-contacts
   noscl key-gen
   noscl relay
