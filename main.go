@@ -31,6 +31,7 @@ Usage:
   noscl key-gen
   noscl relay
   noscl relay add <url>
+  noscl relay remove [--all]
   noscl relay remove <url>
   noscl relay recommend <url>
 

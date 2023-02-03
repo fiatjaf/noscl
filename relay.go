@@ -16,9 +16,15 @@ func addRelay(opts docopt.Opts) {
 }
 
 func removeRelay(opts docopt.Opts) {
-	addr := opts["<url>"].(string)
-	delete(config.Relays, addr)
-	fmt.Printf("Removed relay %s.\n", addr)
+	if addr, _ := opts.String("<url>"); addr != "" {
+		delete(config.Relays, addr)
+		fmt.Printf("Removed relay %s.\n", addr)
+	}
+
+	if all, _ := opts.Bool("--all"); all {
+		config.Relays = map[string]Policy{}
+		fmt.Println("Removed all relays.")
+	}
 }
 
 func recommendRelay(opts docopt.Opts) {
