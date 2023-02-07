@@ -3,12 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/nbd-wtf/go-nostr/nip04"
 	"log"
 	"strings"
 
 	"github.com/dustin/go-humanize"
 	"github.com/nbd-wtf/go-nostr"
+	"github.com/nbd-wtf/go-nostr/nip04"
 	"gopkg.in/yaml.v2"
 )
 
@@ -19,6 +19,13 @@ var kindNames = map[int]string{
 	nostr.KindContactList:            "Contact List",
 	nostr.KindEncryptedDirectMessage: "Encrypted Message",
 	nostr.KindDeletion:               "Deletion Notice",
+	nostr.KindBoost:                  "Boost",
+	nostr.KindReaction:               "Reaction",
+	nostr.KindChannelCreation:        "Channel Creation",
+	nostr.KindChannelMetadata:        "Channel Metadata",
+	nostr.KindChannelMessage:         "Channel Message",
+	nostr.KindChannelHideMessage:     "Channel Hide Message",
+	nostr.KindChannelMuteUser:        "Channel Mute User",
 }
 
 func printEvent(evt nostr.Event, nick *string, verbose bool) {
