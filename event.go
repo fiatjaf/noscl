@@ -50,3 +50,28 @@ func deleteEvent(opts docopt.Opts) {
 
 	printPublishStatus(event, statuses)
 }
+
+// iterEventsWithTimeout returns a channel of events; this channel will be
+// closed once events have stopped arriving for timeoutDuration
+func iterEventsWithTimeout(events chan nostr.Event, timeoutDuration time.Duration) chan nostr.Event {
+	timeout := time.After(timeoutDuration)
+	tick := time.Tick(1 * time.Millisecond)
+
+	resulsChan := make(chan nostr.Event)
+
+	go func() {
+		for {
+			select {
+			case <-timeout:
+				close(resulsChan)
+				return
+			case <-tick:
+				timeout = time.After(timeoutDuration)
+				event := <-events
+				resulsChan <- event
+			}
+		}
+	}()
+
+	return resulsChan
+}
