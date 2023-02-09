@@ -22,6 +22,7 @@ Usage:
   noscl profile <key>
   noscl follow <key> [--name=<name>]
   noscl unfollow <key>
+  noscl following
   noscl event <id>
   noscl share-contacts
   noscl key-gen
