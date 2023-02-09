@@ -25,6 +25,7 @@ Usage:
   noscl profile [--verbose] <pubkey>
   noscl follow <pubkey> [--name=<name>]
   noscl unfollow <pubkey>
+  noscl following
   noscl event view [--verbose] <id>
   noscl event delete <id>
   noscl share-contacts
@@ -102,6 +103,8 @@ func main() {
 	case opts["unfollow"].(bool):
 		unfollow(opts)
 		saveConfig(path)
+	case opts["following"].(bool):
+		following(opts)
 	case opts["event"].(bool):
 		switch {
 		case opts["view"].(bool):

@@ -54,3 +54,13 @@ func unfollow(opts docopt.Opts) {
 	delete(config.Following, key)
 	fmt.Printf("Unfollowed %s.\n", key)
 }
+
+func following(opts docopt.Opts) {
+	if len(config.Following) == 0 {
+		fmt.Println("You aren't following anyone yet.")
+		return
+	}
+	for _, profile := range config.Following {
+		fmt.Println(profile.Key, profile.Name)
+	}
+}
