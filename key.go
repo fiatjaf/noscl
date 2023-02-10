@@ -5,28 +5,43 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/btcsuite/btcd/btcec/v2"
+	"github.com/btcsuite/btcd/btcutil/bech32"
 	"github.com/docopt/docopt-go"
-
 	"github.com/nbd-wtf/go-nostr/nip06"
 	"github.com/nbd-wtf/go-nostr/nip19"
 )
 
+func decodeKey(keyraw string) ([]byte, error) {
+	if len(keyraw) == 64 {
+		// hex-encoded
+		keyval, err := hex.DecodeString(keyraw)
+		if err != nil {
+			return nil, fmt.Errorf("decoding key from hex: %w", err)
+		}
+		return keyval, nil
+	}
+
+	// bech32-encoded
+	_, keyval, err := bech32.Decode(keyraw)
+	if err != nil {
+		return nil, err
+	}
+	if err != nil {
+		return nil, fmt.Errorf("decoding key from bech32: %w", err)
+	}
+	return keyval, nil
+}
+
 func setPrivateKey(opts docopt.Opts) {
-	keyhex := opts["<key>"].(string)
-	keylen := len(keyhex)
-
-	if keylen < 64 {
-		log.Printf("key too short was %d characters, must be 32 bytes hex-encoded, i.e. 64 characters.\n", keylen)
+	keyraw := opts["<key>"].(string)
+	keyval, err := decodeKey(keyraw)
+	if err != nil {
+		log.Printf("Failed to parse private key: %s\n", err.Error())
 		return
 	}
 
-	if _, err := hex.DecodeString(keyhex); err != nil {
-		log.Printf("Error decoding key from hex: %s\n", err.Error())
-		return
-	}
-
-	config.PrivateKey = keyhex
+	config.PrivateKey = string(keyval)
 }
 
 func showPublicKey(opts docopt.Opts) {
@@ -49,8 +64,8 @@ func getPubKey(privateKey string) string {
 		log.Printf("Error decoding key from hex: %s\n", err.Error())
 		return ""
 	} else {
-		_, pubkey := btcec.PrivKeyFromBytes(btcec.S256(), keyb)
-		return hex.EncodeToString(pubkey.X.Bytes())
+		_, pubkey := btcec.PrivKeyFromBytes(keyb)
+		return hex.EncodeToString(pubkey.X().Bytes())
 	}
 }
 
