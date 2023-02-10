@@ -83,6 +83,27 @@ func printEvent(evt nostr.Event, nick *string, verbose bool) {
 		fmt.Print(str)
 	case nostr.KindTextNote:
 		fmt.Print("  " + strings.ReplaceAll(evt.Content, "\n", "\n  "))
+	case nostr.KindBoost:
+		var event nostr.Event
+		err := json.Unmarshal([]byte(evt.Content), &event)
+		if err != nil {
+			fmt.Println("ERR", err)
+			return
+		}
+
+		kind, ok := kindNames[event.Kind]
+		if !ok {
+			kind = "Unknown Kind"
+		}
+		var ID string = shorten(event.ID)
+		var fromField string = shorten(event.PubKey)
+		fmt.Printf("  %s [%s] from %s %s\n",
+			kind,
+			ID,
+			fromField,
+			humanize.Time(event.CreatedAt),
+		)
+		fmt.Print("    ", event.Content)
 	case nostr.KindRecommendServer:
 	case nostr.KindContactList:
 	case nostr.KindEncryptedDirectMessage:
