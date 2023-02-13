@@ -6,7 +6,9 @@ import (
 	"log"
 
 	"github.com/btcsuite/btcd/btcec/v2"
+	"github.com/btcsuite/btcd/btcec/v2/schnorr"
 	"github.com/btcsuite/btcd/btcutil/bech32"
+
 	"github.com/docopt/docopt-go"
 	"github.com/nbd-wtf/go-nostr/nip06"
 	"github.com/nbd-wtf/go-nostr/nip19"
@@ -65,7 +67,7 @@ func getPubKey(privateKey string) string {
 		return ""
 	} else {
 		_, pubkey := btcec.PrivKeyFromBytes(keyb)
-		return hex.EncodeToString(pubkey.X().Bytes())
+		return hex.EncodeToString(schnorr.SerializePubKey(pubkey))
 	}
 }
 
