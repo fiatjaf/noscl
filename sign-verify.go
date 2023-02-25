@@ -32,7 +32,7 @@ func signEventJSON(opts docopt.Opts) {
 		return
 	}
 
-	fmt.Printf("Signature:\n  %s\n", event.Sig)
+	fmt.Printf("Id: %s\nSignature: %s\n", event.ID, event.Sig)
 }
 
 func verifyEventJSON(opts docopt.Opts) {
