@@ -14,19 +14,20 @@ import (
 const USAGE = `noscl
 
 Usage:
-  noscl home [--verbose]
+  noscl home [--verbose] [--json] [--onlyreplies] [--noreplies] [--kinds=<kinds>...] [--since=<since>] [--until=<until>] [--limit=<limit>]
+  noscl inbox [--verbose] [--json] [--onlyreplies] [--noreplies] [--since=<since>] [--until=<until>] [--limit=<limit>]
   noscl setprivate <key>
   noscl sign <event-json>
   noscl verify <event-json>
   noscl public
   noscl publish [--reference=<id>...] [--profile=<id>...] <content>
   noscl message [--reference=<id>...] <pubkey> <content>
-  noscl metadata --name=<name> [--about=<about>] [--picture=<picture>]
-  noscl profile [--verbose] <pubkey>
+  noscl metadata --name=<name> [--about=<about>] [--picture=<picture>] [--nip05=<nip05>] [--banner=<banner>] [--displayname=<displayname>] [--lud16=<lud16>] [--username=<username>] [--website=<website>]
+  noscl profile [--verbose] [--json] <pubkey>
   noscl follow <pubkey> [--name=<name>]
   noscl unfollow <pubkey>
   noscl following
-  noscl event view [--verbose] <id>
+  noscl event view [--verbose] [--json] <id>
   noscl event delete <id>
   noscl share-contacts
   noscl key-gen
@@ -74,7 +75,9 @@ func main() {
 
 	switch {
 	case opts["home"].(bool):
-		home(opts)
+		home(opts, false)
+    case opts["inbox"].(bool):
+        home(opts, true)
 	case opts["setprivate"].(bool):
 		// TODO make this read STDIN and encrypt the key locally
 		setPrivateKey(opts)

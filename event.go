@@ -10,6 +10,7 @@ import (
 
 func viewEvent(opts docopt.Opts) {
 	verbose, _ := opts.Bool("--verbose")
+    jsonformat, _ := opts.Bool("--json")
 	id := opts["<id>"].(string)
 	if id == "" {
 		log.Println("provided event ID was empty")
@@ -24,7 +25,7 @@ func viewEvent(opts docopt.Opts) {
 			continue
 		}
 
-		printEvent(event, nil, verbose)
+		printEvent(event, nil, verbose, jsonformat)
 		break
 	}
 }
