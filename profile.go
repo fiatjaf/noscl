@@ -11,6 +11,7 @@ import (
 
 func showProfile(opts docopt.Opts) {
 	verbose, _ := opts.Bool("--verbose")
+    jsonformat, _ := opts.Bool("--json")
 	key := nip19.TranslatePublicKey(opts["<pubkey>"].(string))
 	if key == "" {
 		log.Println("Profile key is empty! Exiting.")
@@ -21,7 +22,7 @@ func showProfile(opts docopt.Opts) {
 
 	_, all := pool.Sub(nostr.Filters{{Authors: []string{key}, Kinds: []int{0}}})
 	for event := range nostr.Unique(all) {
-		printEvent(event, nil, verbose)
+		printEvent(event, nil, verbose, jsonformat)
 	}
 }
 

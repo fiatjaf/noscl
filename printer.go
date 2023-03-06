@@ -28,18 +28,26 @@ var kindNames = map[int]string{
 	nostr.KindChannelMuteUser:        "Channel Mute User",
 }
 
-func printEvent(evt nostr.Event, nick *string, verbose bool) {
+func printEvent(evt nostr.Event, nick *string, verbose bool, jsonformat bool) {
 	kind, ok := kindNames[evt.Kind]
 	if !ok {
-		kind = "Unknown Kind"
+		kind = fmt.Sprintf("Unknown Kind (%d)", evt.Kind)
 	}
 
-	// Don't print encrypted messages that aren't for me
+	// Don't print encrypted messages that aren't for me or from me
+    pubkey := getPubKey(config.PrivateKey)
 	if evt.Kind == nostr.KindEncryptedDirectMessage {
-		if !evt.Tags.ContainsAny("p", nostr.Tag{getPubKey(config.PrivateKey)}) {
+		if (!evt.Tags.ContainsAny("p", nostr.Tag{getPubKey(config.PrivateKey)})) && (evt.PubKey != pubkey) {
 			return
 		}
 	}
+
+    // json
+    if jsonformat {
+        jevt, _ := json.MarshalIndent(evt, "", "\t")
+        fmt.Print(string(jevt))
+        return
+    }
 
 	var ID string = shorten(evt.ID)
 	var fromField string = shorten(evt.PubKey)
