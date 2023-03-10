@@ -60,7 +60,5 @@ func message(opts docopt.Opts) {
 		return
 	}
 
-    log.Printf("%+v\n", event)
-    log.Printf("%+v\n", statuses)
-	// printPublishStatus(event, statuses)
+	printPublishStatus(event, statuses)
 }

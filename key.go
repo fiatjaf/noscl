@@ -43,7 +43,9 @@ func setPrivateKey(opts docopt.Opts) {
 		return
 	}
 
-	config.PrivateKey = string(keyval)
+    // store consistently as hex
+    keyvalhex := hex.EncodeToString(keyval)
+	config.PrivateKey = string(keyvalhex)
 }
 
 func showPublicKey(opts docopt.Opts) {
