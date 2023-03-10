@@ -1,27 +1,24 @@
 package main
 
 import (
-	"encoding/json"
-	"log"
+    "encoding/json"
+    "log"
     "strconv"
     "time"
 
-	"github.com/docopt/docopt-go"
-	"github.com/nbd-wtf/go-nostr"
+    "github.com/docopt/docopt-go"
+    "github.com/nbd-wtf/go-nostr"
 )
 
 func home(opts docopt.Opts, inboxMode bool) {
-	if len(config.Following) == 0 {
-		log.Println("You need to be following someone to run 'home'")
-		return
-	}
 
-	initNostr()
+    initNostr()
 
-	verbose, _ := opts.Bool("--verbose")
+    verbose, _ := opts.Bool("--verbose")
     jsonformat, _ := opts.Bool("--json")
     noreplies, _ := opts.Bool("--noreplies")
     onlyreplies, _ := opts.Bool("--onlyreplies")
+    onlymentions, _ := opts.Bool("--onlymentions")
     kinds, kindserr := optSlice(opts, "--kinds")
     if kindserr != nil {
         return
@@ -36,23 +33,35 @@ func home(opts docopt.Opts, inboxMode bool) {
     until, _ := opts.Int("--until")
     limit, _ := opts.Int("--limit")
 
-	var keys []string
-	nameMap := map[string]string{}
-	for _, follow := range config.Following {
-		keys = append(keys, follow.Key)
-		if follow.Name != "" {
-			nameMap[follow.Key] = follow.Name
-		}
-	}
+    if len(config.Following) == 0 && !inboxMode {
+        if !onlymentions {
+            log.Println("You need to be following someone to run 'home'")
+            return
+        }
+    }
+
+    var keys []string
+    nameMap := map[string]string{}
+    for _, follow := range config.Following {
+        keys = append(keys, follow.Key)
+        if follow.Name != "" {
+            nameMap[follow.Key] = follow.Name
+        }
+    }
     pubkey := getPubKey(config.PrivateKey)
+
+    // Prepare filter to subscribe to based on options
     filters := nostr.Filters{{Limit: limit}}
     if inboxMode {
-        // Filter by p tag to me
-        filters[0].Tags = nostr.TagMap{"p": {pubkey}}
         // Force kinds to encrypted messages
         intkinds = make([]int, 0)
-        intkinds = append(intkinds, 4)
+        intkinds = append(intkinds, nostr.KindEncryptedDirectMessage)
+    }
+    if inboxMode || onlymentions {
+        // Filter by p tag to me
+        filters[0].Tags = nostr.TagMap{"p": {pubkey}}
     } else {
+        // Filter to just those I follow
         filters[0].Authors = keys
     }
     if since > 0 {
