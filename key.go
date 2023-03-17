@@ -62,7 +62,7 @@ func showPublicKey(opts docopt.Opts) {
 }
 
 func getPubKey(privateKey string) string {
-	if keyb, err := hex.DecodeString(config.PrivateKey); err != nil {
+	if keyb, err := hex.DecodeString(privateKey); err != nil {
 		log.Printf("Error decoding key from hex: %s\n", err.Error())
 		return ""
 	} else {
