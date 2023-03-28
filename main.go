@@ -20,7 +20,7 @@ Usage:
   noscl sign <event-json>
   noscl verify <event-json>
   noscl public
-  noscl publish [--reference=<id>...] [--profile=<id>...] <content>
+  noscl publish [--reference=<id>...] [--profile=<id>...] [--file=<file>] [<content>]
   noscl message [--reference=<id>...] <pubkey> <content>
   noscl metadata --name=<name> [--about=<about>] [--picture=<picture>] [--nip05=<nip05>] [--banner=<banner>] [--displayname=<displayname>] [--lud16=<lud16>] [--username=<username>] [--website=<website>]
   noscl profile [--verbose] [--json] <pubkey>
@@ -76,8 +76,8 @@ func main() {
 	switch {
 	case opts["home"].(bool):
 		home(opts, false)
-    case opts["inbox"].(bool):
-        home(opts, true)
+	case opts["inbox"].(bool):
+		home(opts, true)
 	case opts["setprivate"].(bool):
 		// TODO make this read STDIN and encrypt the key locally
 		setPrivateKey(opts)
