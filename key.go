@@ -17,7 +17,11 @@ import (
 func decodeKey(keyraw string) ([]byte, error) {
 	if len(keyraw) == 64 {
 		// hex-encoded
-		return []byte(keyraw), nil
+		keyval, err := hex.DecodeString(keyraw)
+		if err != nil {
+			return nil, fmt.Errorf("decoding key from hex: %w", err)
+		}
+		return keyval, nil
 	}
 
 	// bech32-encoded
@@ -39,7 +43,7 @@ func setPrivateKey(opts docopt.Opts) {
 		return
 	}
 
-	config.PrivateKey = string(keyval)
+	config.PrivateKey = string(hex.EncodeToString(keyval))
 }
 
 func showPublicKey(opts docopt.Opts) {
