@@ -17,11 +17,7 @@ import (
 func decodeKey(keyraw string) ([]byte, error) {
 	if len(keyraw) == 64 {
 		// hex-encoded
-		keyval, err := hex.DecodeString(keyraw)
-		if err != nil {
-			return nil, fmt.Errorf("decoding key from hex: %w", err)
-		}
-		return keyval, nil
+		return []byte(keyraw), nil
 	}
 
 	// bech32-encoded
