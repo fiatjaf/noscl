@@ -10,7 +10,7 @@ import (
 
 func viewEvent(opts docopt.Opts) {
 	verbose, _ := opts.Bool("--verbose")
-    jsonformat, _ := opts.Bool("--json")
+	jsonformat, _ := opts.Bool("--json")
 	id := opts["<id>"].(string)
 	if id == "" {
 		log.Println("provided event ID was empty")
@@ -18,7 +18,7 @@ func viewEvent(opts docopt.Opts) {
 	}
 	initNostr()
 
-	_, all := pool.Sub(nostr.Filters{{IDs: []string{id}}})
+	_, all, unsubscribe := pool.Sub(nostr.Filters{{IDs: []string{id}}})
 	for event := range nostr.Unique(all) {
 		if event.ID != id {
 			log.Printf("got unexpected event %s.\n", event.ID)
@@ -28,6 +28,7 @@ func viewEvent(opts docopt.Opts) {
 		printEvent(event, nil, verbose, jsonformat)
 		break
 	}
+	unsubscribe()
 }
 
 func deleteEvent(opts docopt.Opts) {
