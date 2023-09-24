@@ -15,9 +15,7 @@ type Metadata struct {
 	Picture     string `json:"picture,omitempty"`
     NIP05       string `json:"nip05,omitempty"`
     Banner      string `json:"banner,omitempty"`
-    DisplayName string `json:"displayName,omitempty"`
     LUD16       string `json:"lud16,omitempty"`
-    UserName    string `json:"username,omitempty"`
     Website     string `json:"website,omitempty"`
 
 }
@@ -30,9 +28,7 @@ func setMetadata(opts docopt.Opts) {
 	picture, _ := opts.String("--picture")
     nip05, _ := opts.String("--nip05")
     banner, _ := opts.String("--banner")
-    displayName, _ := opts.String("--displayname")
     lud16, _ := opts.String("--lud16")
-    userName, _ := opts.String("--username")
     website, _ := opts.String("--website")
 
 	jmetadata, _ := json.Marshal(Metadata{
@@ -41,9 +37,7 @@ func setMetadata(opts docopt.Opts) {
 		Picture:        picture,
         NIP05:          nip05,
         Banner:         banner,
-        DisplayName:    displayName,
         LUD16:          lud16,
-        UserName:       userName,
         Website:        website,
 	})
 
