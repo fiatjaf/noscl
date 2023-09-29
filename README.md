@@ -1,6 +1,7 @@
 noscl
 =====
-[![Go Report Card](https://goreportcard.com/badge/github.com/fiatjaf/noscl)](https://goreportcard.com/report/github.com/fiatjaf/noscl)  [![License: ODbL](https://img.shields.io/badge/License-PDDL-brightgreen.svg)](https://opendatacommons.org/licenses/pddl/)  
+[![Go Report Card](https://goreportcard.com/badge/github.com/fiatjaf/noscl)](https://goreportcard.com/report/github.com/fiatjaf/noscl)  [![License: ODbL](https://img.shields.io/badge/License-PDDL-brightgreen.svg)](https://opendatacommons.org/licenses/pddl/)  [![Latest Release](https://img.shields.io/github/v/release/fiatjaf/noscl?logo=github)](https://github.com/fiatjaf/noscl/releases)
+  
 Command line client for [Nostr](https://github.com/fiatjaf/nostr).  
 
 ## Installation
