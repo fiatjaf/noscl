@@ -1,7 +1,7 @@
 noscl
 =====
-
-Command line client for [Nostr](https://github.com/fiatjaf/nostr).
+[![Go Report Card](https://goreportcard.com/badge/github.com/fiatjaf/noscl)](https://goreportcard.com/report/github.com/fiatjaf/noscl)  [![License: ODbL](https://img.shields.io/badge/License-PDDL-brightgreen.svg)](https://opendatacommons.org/licenses/pddl/)  
+Command line client for [Nostr](https://github.com/fiatjaf/nostr).  
 
 ## Installation
 
