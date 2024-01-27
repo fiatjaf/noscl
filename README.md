@@ -1,8 +1,12 @@
 noscl
 =====
 [![Go Report Card](https://goreportcard.com/badge/github.com/fiatjaf/noscl)](https://goreportcard.com/report/github.com/fiatjaf/noscl)  [![License: ODbL](https://img.shields.io/badge/License-PDDL-brightgreen.svg)](https://opendatacommons.org/licenses/pddl/)  [![Latest Release](https://img.shields.io/github/v/release/fiatjaf/noscl?logo=github)](https://github.com/fiatjaf/noscl/releases)
-  
-Command line client for [Nostr](https://github.com/fiatjaf/nostr).  
+
+Command line client for [Nostr](https://github.com/fiatjaf/nostr).
+
+## Notice
+
+Although it works, this project is somewhat abandoned. For a more complete CLI experience you can try https://github.com/mattn/algia and for a more streamlined CLI plumbing tool try https://github.com/fiatjaf/nak.
 
 ## Installation
 
