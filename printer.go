@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"strings"
@@ -35,19 +36,26 @@ func printEvent(evt nostr.Event, nick *string, verbose bool, jsonformat bool) {
 	}
 
 	// Don't print encrypted messages that aren't for me or from me
-    pubkey := getPubKey(config.PrivateKey)
+	pubkey := getPubKey(config.PrivateKey)
 	if evt.Kind == nostr.KindEncryptedDirectMessage {
 		if (!evt.Tags.ContainsAny("p", nostr.Tag{getPubKey(config.PrivateKey)})) && (evt.PubKey != pubkey) {
 			return
 		}
 	}
 
-    // json
-    if jsonformat {
-        jevt, _ := json.MarshalIndent(evt, "", "\t")
-        fmt.Print(string(jevt))
-        return
-    }
+	// json
+	if jsonformat {
+		if evt.Kind == nostr.KindEncryptedDirectMessage {
+			txt, err := decryptMessage((evt))
+			if err == nil {
+				evt.SetExtra("content_decrypted", txt)
+			}
+		}
+
+		jevt, _ := json.MarshalIndent(evt, "", "\t")
+		fmt.Print(string(jevt))
+		return
+	}
 
 	var ID string = shorten(evt.ID)
 	var fromField string = shorten(evt.PubKey)
@@ -115,14 +123,9 @@ func printEvent(evt nostr.Event, nick *string, verbose bool, jsonformat bool) {
 	case nostr.KindRecommendServer:
 	case nostr.KindContactList:
 	case nostr.KindEncryptedDirectMessage:
-		sharedSecret, err := nip04.ComputeSharedSecret(config.PrivateKey, evt.PubKey)
+		txt, err := decryptMessage((evt))
 		if err != nil {
-			log.Printf("Error computing shared key: %s. \n", err.Error())
-			return
-		}
-		txt, err := nip04.Decrypt(evt.Content, sharedSecret)
-		if err != nil {
-			log.Printf("Error decrypting message: %s. \n", err.Error())
+			log.Printf("%s\n", err.Error())
 			return
 		}
 		fmt.Print(txt)
@@ -132,6 +135,23 @@ func printEvent(evt nostr.Event, nick *string, verbose bool, jsonformat bool) {
 	}
 
 	fmt.Printf("\n")
+}
+
+func decryptMessage(evt nostr.Event) (string, error) {
+	if evt.Kind == nostr.KindEncryptedDirectMessage {
+		sharedSecret, err := nip04.ComputeSharedSecret(config.PrivateKey, evt.PubKey)
+		if err != nil {
+			return "", errors.New(fmt.Sprintf("Error computing shared key: %s.", err.Error()))
+		}
+
+		txt, err := nip04.Decrypt(evt.Content, sharedSecret)
+		if err != nil {
+			return "", errors.New(fmt.Sprintf("Error decrypting message: %s.", err.Error()))
+		}
+		return txt, nil
+	} else {
+		return "", errors.New("The event is not an Encrypted Message.")
+	}
 }
 
 func shorten(id string) string {
