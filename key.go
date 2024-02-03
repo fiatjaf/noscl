@@ -56,7 +56,7 @@ func showPublicKey(opts docopt.Opts) {
 	if pubkey != "" {
 		fmt.Printf("%s\n", pubkey)
 
-		nip19pubkey, _ := nip19.EncodePublicKey(pubkey, "")
+		nip19pubkey, _ := nip19.EncodePublicKey(pubkey)
 		fmt.Printf("%s\n", nip19pubkey)
 	}
 }
@@ -86,6 +86,15 @@ func keyGen(opts docopt.Opts) {
 		return
 	}
 
+	pk := getPubKey(sk)
+	nsec, _ := nip19.EncodePrivateKey(sk)
+	npub, _ := nip19.EncodePublicKey(pk)
+	nprofile, _ := nip19.EncodeProfile(pk, []string{})
+
 	fmt.Println("seed:", seedWords)
 	fmt.Println("private key:", sk)
+	fmt.Println("public key:", pk)
+	fmt.Println("nsec:", nsec)
+	fmt.Println("npub:", npub)
+	fmt.Println("nprofile:", nprofile)
 }

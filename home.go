@@ -64,7 +64,7 @@ func home(opts docopt.Opts, inboxMode bool) {
 		filters[0].Until = &untilTime
 	}
 	filters[0].Kinds = intkinds
-	_, all := pool.Sub(filters)
+	_, all, unsubscribe := pool.Sub(filters)
 	for event := range nostr.Unique(all) {
 		// Do we have a nick for the author of this message?
 		nick, ok := nameMap[event.PubKey]
@@ -105,4 +105,5 @@ func home(opts docopt.Opts, inboxMode bool) {
 
 		printEvent(event, &nick, verbose, jsonformat)
 	}
+	unsubscribe()
 }

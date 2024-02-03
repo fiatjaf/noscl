@@ -11,8 +11,8 @@ import (
 
 func showProfile(opts docopt.Opts) {
 	verbose, _ := opts.Bool("--verbose")
-    jsonformat, _ := opts.Bool("--json")
-	key := nip19.TranslatePublicKey(opts["<pubkey>"].(string))
+	jsonformat, _ := opts.Bool("--json")
+	key, _ := nip19.EncodeProfile(opts["<pubkey>"].(string), []string{})
 	if key == "" {
 		log.Println("Profile key is empty! Exiting.")
 		return
@@ -20,14 +20,15 @@ func showProfile(opts docopt.Opts) {
 
 	initNostr()
 
-	_, all := pool.Sub(nostr.Filters{{Authors: []string{key}, Kinds: []int{0}}})
+	_, all, unsubscribe := pool.Sub(nostr.Filters{{Authors: []string{key}, Kinds: []int{0}}})
 	for event := range nostr.Unique(all) {
 		printEvent(event, nil, verbose, jsonformat)
 	}
+	unsubscribe()
 }
 
 func follow(opts docopt.Opts) {
-	key := nip19.TranslatePublicKey(opts["<pubkey>"].(string))
+	key, _ := nip19.EncodeProfile(opts["<pubkey>"].(string), []string{})
 	if key == "" {
 		log.Println("Follow key is empty! Exiting.")
 		return
@@ -38,7 +39,7 @@ func follow(opts docopt.Opts) {
 		name = ""
 	}
 
-        config.Following[key] = Follow{
+	config.Following[key] = Follow{
 		Key:  key,
 		Name: name,
 	}
@@ -46,7 +47,7 @@ func follow(opts docopt.Opts) {
 }
 
 func unfollow(opts docopt.Opts) {
-	key := nip19.TranslatePublicKey(opts["<pubkey>"].(string))
+	key, _ := nip19.EncodeProfile(opts["<pubkey>"].(string), []string{})
 	if key == "" {
 		log.Println("No unfollow key provided! Exiting.")
 		return
